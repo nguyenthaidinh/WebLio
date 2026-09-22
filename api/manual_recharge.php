@@ -3,6 +3,9 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+require_once __DIR__ . '/../server_config.php';
+require_server_one_feature(true);
+
 include_once '../connect.php';
 include_once '../recharge_bonus.php';
 

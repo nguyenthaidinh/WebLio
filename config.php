@@ -1,6 +1,6 @@
 <?php
 include_once 'cauhinh.php';
-$config = mysqli_connect($db_host, $db_user, $db_pass, $db_name);
+$config = mysqli_connect($db_host, $db_user, $db_pass, $db_name, $db_port);
 if (!$config) {
 	die("KHONG THE KET NOI DEN CSDL ! VUI LONG KIEM TRA LAI");
 } else {

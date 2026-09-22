@@ -7,6 +7,9 @@ if ($_login == null) {
     exit();
 }
 
+header('Location: /admin/server-runtime.php?server=2#runtime-stats');
+exit();
+
 $id_user = "SELECT COUNT(id) AS id FROM account";
 $user = mysqli_query($conn, $id_user);
 

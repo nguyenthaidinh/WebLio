@@ -3,6 +3,9 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+require_once __DIR__ . '/../server_config.php';
+require_server_one_feature(false);
+
 include_once '../connect.php';
 include_once '../forum_data.php';
 include_once '../cauhinh.php';

@@ -34,6 +34,14 @@ $today_gold_spends = admin_count_query($conn, "SELECT COUNT(*) FROM gold_bar_spe
 $admin_name = $_username ?? 'admin';
 $quick_items = [
     [
+        'title' => 'Điều khiển máy chủ',
+        'desc' => 'Trạng thái runtime và thao tác trực tiếp qua Java Admin API.',
+        'href' => '/admin/server-runtime.php?server=2',
+        'icon' => 'fas fa-server',
+        'meta' => 'Server 2',
+        'priority' => true,
+    ],
+    [
         'title' => 'Đăng bài',
         'desc' => 'Đăng thông báo/sự kiện lên đầu diễn đàn, hỗ trợ nhiều ảnh.',
         'href' => '/dang-bai.php',
@@ -84,7 +92,7 @@ $quick_items = [
     [
         'title' => 'Buff vật phẩm',
         'desc' => 'Thêm vật phẩm vào hành trang người chơi.',
-        'href' => '/admin/vatpham.php',
+        'href' => '/admin/server-runtime.php?server=2#runtime-items',
         'icon' => 'fas fa-box',
         'meta' => 'Item',
         'priority' => false,
@@ -92,7 +100,7 @@ $quick_items = [
     [
         'title' => 'Cộng chỉ số',
         'desc' => 'Chỉnh sức mạnh, tiềm năng, HP, KI.',
-        'href' => '/admin/chiso.php',
+        'href' => '/admin/server-runtime.php?server=2#runtime-stats',
         'icon' => 'fas fa-chart-line',
         'meta' => 'Chỉ số',
         'priority' => false,
@@ -124,6 +132,7 @@ $quick_items = [
 ];
 
 $sidebar_items = [
+    ['label' => 'Điều khiển server', 'href' => '/admin/server-runtime.php?server=2', 'icon' => 'fas fa-server'],
     ['label' => 'Diễn đàn', 'href' => '/forum.php', 'icon' => 'fas fa-comments'],
     ['label' => 'Đăng bài', 'href' => '/dang-bai.php', 'icon' => 'fas fa-edit'],
     ['label' => 'Duyệt', 'href' => '/admin/nap.php', 'icon' => 'fas fa-wallet'],

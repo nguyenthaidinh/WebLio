@@ -1,6 +1,9 @@
 <?php
 require_once 'settings.php';
 require_once 'forum_data.php';
+$current_server_id = function_exists('current_game_server_id') ? current_game_server_id() : '1';
+$server_one_notice = $_SESSION['server_one_notice'] ?? '';
+unset($_SESSION['server_one_notice']);
 $conn->close();
 ?>
 
@@ -37,6 +40,7 @@ $conn->close();
     <style>
         .code-by-lio { margin-top: 12px; font-size: 12px; color: #7b7870; display: flex; align-items: center; justify-content: center; gap: 6px; }
         .lio-badge { background: linear-gradient(135deg, #f97316, #febb12) !important; color: #000 !important; font-weight: 800; padding: 2px 8px; border-radius: 4px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 2px 5px rgba(249,115,22,0.3); }
+        .server-one-notice { margin: 0 0 12px; padding: 10px 12px; border: 1px solid #f59e0b; background: #fff7d6; color: #8a3b00; font-size: 13px; font-weight: 700; text-align: center; }
     </style>
 </head>
 <body>
@@ -99,17 +103,24 @@ $conn->close();
                                 });
                             </script>
                             <div class="body">
+                                <?php if ($server_one_notice !== ''): ?>
+                                    <div class="server-one-notice"><?php echo htmlspecialchars($server_one_notice, ENT_QUOTES, 'UTF-8'); ?></div>
+                                <?php endif; ?>
                                 <div class="box_inputboxx" style="width:100%">
     <?php if ($is_logged_in): ?>
         <div id="user-info" style="color:white; text-align:center;">
             <div class="user-details"> <br>
                 <span>Xin chào: <?php echo htmlspecialchars($display_player_name); ?></span>
-                <a href="/app/nap-ngoc.php">Nạp Tiền</a> <br>
-                <a href="/app/doi-vang.php">Đổi Thỏi Vàng</a> <br>
+                <?php if ($current_server_id === '1'): ?>
+                    <a href="/app/nap-ngoc.php">Nạp Tiền</a> <br>
+                    <a href="/app/doi-vang.php">Đổi Thỏi Vàng</a> <br>
+                    <a href="/app/vong-quay.php">Vòng Quay May Mắn</a> <br>
+                <?php else: ?>
+                    <span>Đang sử dụng: Server 2</span> <br>
+                <?php endif; ?>
                 <a href="/app/doi-mat-khau.php">Đổi mật khẩu</a> <br>
                 <a href="/app/logout.php">Đăng xuất</a> <br>
-                <a href="/app/vong-quay.php">Vòng Quay May Mắn</a> <br>
-                <?php if (!empty($is_admin_for_avatar)): ?>
+                <?php if ($current_server_id === '1' && !empty($is_admin_for_avatar)): ?>
                     <a href="/admin/">Admin</a> <br>
                 <?php endif; ?>
         </div>

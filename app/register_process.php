@@ -9,14 +9,15 @@ if (isset($_SESSION['user_id'])) {
     exit();
 }
 header('Content-Type: application/json');
-$host = '127.0.0.1';
+$host = '103.67.197.241';
+$port = 14445;
 $dbname = 'team2026';
 $user = 'liodev';
 $pass = 'liopass';
 $pdo = null;
 
 try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $pass);
+    $pdo = new PDO("mysql:host=$host;port=$port;dbname=$dbname;charset=utf8", $user, $pass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 } catch (PDOException $e) {

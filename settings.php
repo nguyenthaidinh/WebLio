@@ -1,6 +1,7 @@
 <?php
 // settings.php
-$ip_sv = "127.0.0.1";
+$ip_sv = "103.67.197.241";
+$port_sv = 14445;
 $dbname_sv = "team2026";
 $user_sv = "liodev";
 $pass_sv = "liopass";

@@ -189,21 +189,37 @@
 			background: rgba(0, 0, 0, 0.35);
 			border: 1px solid rgba(249, 115, 22, 0.2);
 			border-radius: 10px;
-			padding: 12px;
+			padding: 6px;
 			margin: 20px 0;
-			display: flex;
-			justify-content: center;
-			align-items: center;
+			display: grid;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: 6px;
 		}
 
 		.server-label {
 			display: flex;
 			align-items: center;
+			justify-content: center;
 			gap: 8px;
 			font-weight: 600;
-			color: #febb12;
+			color: #d1d5db;
 			cursor: pointer;
 			font-size: 14px;
+			min-height: 42px;
+			border: 1px solid transparent;
+			border-radius: 7px;
+			transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+		}
+
+		.server-label:hover {
+			background: rgba(249, 115, 22, 0.1);
+			color: #fff;
+		}
+
+		.server-label:has(input:checked) {
+			background: rgba(249, 115, 22, 0.18);
+			border-color: rgba(249, 115, 22, 0.65);
+			color: #febb12;
 		}
 
 		.server-label input[type="radio"] {
@@ -354,7 +370,11 @@
 							<div class="server-container">
 								<label class="server-label">
 									<input type="radio" name="server" value="1" checked required />
-									<span>Server 1 sao</span>
+									<span>Server 1</span>
+								</label>
+								<label class="server-label">
+									<input type="radio" name="server" value="2" required />
+									<span>Server 2</span>
 								</label>
 							</div>
 

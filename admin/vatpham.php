@@ -6,6 +6,9 @@ if ($_login == null) {
     exit();
 }
 
+header('Location: /admin/server-runtime.php?server=2#runtime-items');
+exit();
+
 ?>
 <!DOCTYPE html>
 <html>

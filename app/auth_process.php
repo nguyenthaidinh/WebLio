@@ -4,9 +4,12 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+ini_set('default_socket_timeout', '5');
+ini_set('mysqlnd.net_read_timeout', '5');
 
 $is_post_request = ($_SERVER['REQUEST_METHOD'] === 'POST');
 if ($is_post_request) {
+    ini_set('display_errors', 0);
     header('Content-Type: application/json; charset=UTF-8');
 }
 
@@ -22,20 +25,43 @@ if (isset($_SESSION['user_id'])) {
     }
     exit();
 }
-$host = '127.0.0.1';
-$dbname = 'team2026';
-$user = 'liodev';
-$pass = 'liopass';
+
+require_once __DIR__ . '/../server_config.php';
+
+$serverId = (string)($_POST['server'] ?? '1');
+$serverConfig = game_server_config($serverId);
+
+if ($serverConfig === null) {
+    echo json_encode([
+        'status' => 'error',
+        'message' => 'Server bạn chọn không hợp lệ.'
+    ], JSON_UNESCAPED_UNICODE);
+    exit();
+}
+
+$host = $serverConfig['host'];
+$port = $serverConfig['port'];
+$dbname = $serverConfig['database'];
+$user = $serverConfig['username'];
+$pass = $serverConfig['password'];
 $pdo = null;
 
 try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $pass);
+    $pdo = new PDO(
+        "mysql:host=$host;port=$port;dbname=$dbname;charset=utf8mb4",
+        $user,
+        $pass,
+        [PDO::ATTR_TIMEOUT => 5]
+    );
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
-    error_log("Lỗi kết nối CSDL: " . $e->getMessage());
+    error_log("Lỗi kết nối {$serverConfig['name']}: " . $e->getMessage());
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        echo json_encode(['status' => 'error', 'message' => 'Không thể kết nối đến cơ sở dữ liệu. Vui lòng thử lại sau.']);
+        echo json_encode([
+            'status' => 'error',
+            'message' => "Không thể kết nối {$serverConfig['name']}. Vui lòng thử lại sau."
+        ], JSON_UNESCAPED_UNICODE);
     } else {
         echo "<!DOCTYPE html><html><head><title>Lỗi</title></head><body><h1>Lỗi kết nối cơ sở dữ liệu.</h1><p>Vui lòng thử lại sau hoặc liên hệ quản trị viên.</p></body></html>";
     }
@@ -62,8 +88,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $user = $stmt->fetch();
 
             if ($user) {
+                session_regenerate_id(true);
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['username'] = $user['username'];
+                $_SESSION['id'] = $user['id'];
+                $_SESSION['account'] = $user['username'];
+                $_SESSION['server_id'] = $serverId;
+                $_SESSION['server_name'] = $serverConfig['name'];
                 $update_stmt = $pdo->prepare("UPDATE account SET last_time_login = NOW(), ip_address = :ip_address WHERE id = :id");
                 $update_stmt->execute([
                     ':ip_address' => $_SERVER['REMOTE_ADDR'],

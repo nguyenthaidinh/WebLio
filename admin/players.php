@@ -3,6 +3,9 @@ include_once 'set.php';
 include_once 'connect.php';
 if ($_login == null) { header("Location: /app/login.php"); exit(); }
 
+header('Location: /admin/server-runtime.php?server=2#runtime-players');
+exit();
+
 $_alert = '';
 
 // Handle edit
