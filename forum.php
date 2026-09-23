@@ -1,9 +1,12 @@
 <?php
 require_once 'settings.php';
 require_once 'forum_data.php';
+require_once __DIR__ . '/forum_post_helpers.php';
 $current_server_id = function_exists('current_game_server_id') ? current_game_server_id() : '1';
 $server_one_notice = $_SESSION['server_one_notice'] ?? '';
 unset($_SESSION['server_one_notice']);
+$forum_post_flash = $_SESSION['forum_post_flash'] ?? null;
+unset($_SESSION['forum_post_flash']);
 $conn->close();
 ?>
 
@@ -41,6 +44,8 @@ $conn->close();
         .code-by-lio { margin-top: 12px; font-size: 12px; color: #7b7870; display: flex; align-items: center; justify-content: center; gap: 6px; }
         .lio-badge { background: linear-gradient(135deg, #f97316, #febb12) !important; color: #000 !important; font-weight: 800; padding: 2px 8px; border-radius: 4px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 2px 5px rgba(249,115,22,0.3); }
         .server-one-notice { margin: 0 0 12px; padding: 10px 12px; border: 1px solid #f59e0b; background: #fff7d6; color: #8a3b00; font-size: 13px; font-weight: 700; text-align: center; }
+        .forum-post-flash { margin: 0 0 12px; padding: 10px 12px; border: 1px solid #77b892; background: #eaf7ef; color: #11683a; font-size: 13px; font-weight: 700; text-align: center; }
+        .forum-post-flash.error { border-color: #dfa0a8; background: #fff0f1; color: #922333; }
     </style>
 </head>
 <body>
@@ -105,6 +110,11 @@ $conn->close();
                             <div class="body">
                                 <?php if ($server_one_notice !== ''): ?>
                                     <div class="server-one-notice"><?php echo htmlspecialchars($server_one_notice, ENT_QUOTES, 'UTF-8'); ?></div>
+                                <?php endif; ?>
+                                <?php if (is_array($forum_post_flash) && !empty($forum_post_flash['message'])): ?>
+                                    <div class="forum-post-flash <?php echo ($forum_post_flash['type'] ?? '') === 'success' ? '' : 'error'; ?>">
+                                        <?php echo htmlspecialchars((string)$forum_post_flash['message'], ENT_QUOTES, 'UTF-8'); ?>
+                                    </div>
                                 <?php endif; ?>
                                 <div class="box_inputboxx" style="width:100%">
     <?php if ($is_logged_in): ?>

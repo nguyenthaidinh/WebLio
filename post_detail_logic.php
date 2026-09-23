@@ -3,6 +3,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 require_once 'settings.php';
 require_once __DIR__ . '/connect.php';
+require_once __DIR__ . '/forum_post_helpers.php';
 
 $post_detail = null;
 $_alert = '';
@@ -50,7 +51,8 @@ if ($logged_in_username !== null && isset($conn)) {
         SELECT
             p.gender,
             p.head,
-            a.admin
+            a.admin,
+            a.is_admin
         FROM account a
         LEFT JOIN player p ON a.id = p.account_id
         WHERE a.username = ?
@@ -63,7 +65,7 @@ if ($logged_in_username !== null && isset($conn)) {
             $user_info = $result_user_info->fetch_assoc();
             $logged_in_player_gender = $user_info['gender'] ?? 0;
             $logged_in_player_head = $user_info['head'] ?? 0;
-            $is_admin = ($user_info['admin'] ?? 0) == 1;
+            $is_admin = (int)($user_info['admin'] ?? 0) === 1 || (int)($user_info['is_admin'] ?? 0) === 1;
         }
         $stmt_user_info->close();
     }
@@ -91,11 +93,14 @@ if ($post_id !== null && isset($conn)) {
             p.ghimbai,     -- Lấy thêm cột ghimbai
             pl.gender AS author_gender,
             pl.head AS author_head,
-            a.admin AS author_is_admin
+            GREATEST(COALESCE(a.admin, 0), COALESCE(a.is_admin, 0)) AS author_is_admin
         FROM
             posts p
         LEFT JOIN
-            account a ON p.username = a.username
+            account a ON a.id = COALESCE(
+                (SELECT au.id FROM account au WHERE au.username = p.username LIMIT 1),
+                (SELECT legacy_player.account_id FROM player legacy_player WHERE legacy_player.name = p.username LIMIT 1)
+            )
         LEFT JOIN
             player pl ON a.id = pl.account_id
         WHERE p.id = ?
@@ -108,7 +113,8 @@ if ($post_id !== null && isset($conn)) {
         $result = $stmt->get_result();
         if ($result->num_rows > 0) {
             $post_detail = $result->fetch_assoc();
-            $conn->query("UPDATE posts SET views = views + 1 WHERE id = " . $post_id);
+            $post_detail['tieude'] = forum_post_normalize_legacy_text($post_detail['tieude'] ?? '');
+            $post_detail['noidung'] = forum_post_normalize_legacy_text($post_detail['noidung'] ?? '');
 
             $author_avatar_src = '/images/avatar/default_avatar.png';
             $author_gender = $post_detail['author_gender'] ?? 0;

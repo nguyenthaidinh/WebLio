@@ -5,16 +5,22 @@ ini_set('display_errors', 1);
 require_once 'settings.php';
 require_once 'set.php';
 require_once 'connect.php';
+require_once __DIR__ . '/forum_post_helpers.php';
 
 if ($_login == null) {
-    header("location:login");
+    header("Location: /app/login.php");
     exit();
 }
 
 $_alert = '';
-if (isset($_SESSION['alert_message'])) {
-    $_alert = $_SESSION['alert_message'];
-    unset($_SESSION['alert_message']);
+$tieude = '';
+$noidung = '';
+$redirect_flash = $_SESSION['forum_post_flash'] ?? null;
+unset($_SESSION['forum_post_flash']);
+if (is_array($redirect_flash) && !empty($redirect_flash['message'])) {
+    $flash_class = ($redirect_flash['type'] ?? '') === 'success' ? 'alert-success' : 'alert-danger';
+    $_alert = "<div class='alert " . $flash_class . "'>"
+        . htmlspecialchars((string)$redirect_flash['message'], ENT_QUOTES, 'UTF-8') . "</div>";
 }
 
 function forum_has_upload_files($field_name)
@@ -123,7 +129,8 @@ function forum_upload_post_images($field_name, &$errors)
             continue;
         }
 
-        $new_name = 'post_' . date('Ymd_His') . '_' . bin2hex(random_bytes(6)) . '.' . $extension;
+        // Ten ngan de JSON cua 10 anh van nam trong cot image VARCHAR(255) hien tai.
+        $new_name = 'p_' . bin2hex(random_bytes(6)) . '.' . $extension;
         $target_path = $upload_dir . DIRECTORY_SEPARATOR . $new_name;
 
         if (!move_uploaded_file($tmp_name, $target_path)) {
@@ -138,13 +145,20 @@ function forum_upload_post_images($field_name, &$errors)
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $tieude = htmlspecialchars(trim((string)($_POST["tieude"] ?? '')), ENT_QUOTES, 'UTF-8');
-    $noidung = htmlspecialchars(trim((string)($_POST["noidung"] ?? '')), ENT_QUOTES, 'UTF-8');
+    $tieude = isset($_POST['tieude']) && is_string($_POST['tieude']) ? trim($_POST['tieude']) : '';
+    $noidung = isset($_POST['noidung']) && is_string($_POST['noidung']) ? trim($_POST['noidung']) : '';
 
-    if (strlen($tieude) < 5 || strlen(trim(strip_tags($noidung))) < 5) {
+    if (!forum_post_verify_csrf($_POST['csrf_token'] ?? null)) {
+        $_alert = "<div class='alert alert-danger'>Phiên bảo mật không hợp lệ. Vui lòng tải lại trang rồi thử lại.</div>";
+    } elseif (forum_post_text_length($tieude) < 5 || forum_post_text_length(trim(strip_tags($noidung))) < 5) {
         $_alert = "<div class='alert alert-danger'>Tiêu đề và nội dung phải có ít nhất 5 ký tự!</div>";
+    } elseif (forum_post_text_length($tieude) > 75) {
+        $_alert = "<div class='alert alert-danger'>Tiêu đề không được vượt quá 75 ký tự.</div>";
+    } elseif (strlen($noidung) > 60000) {
+        $_alert = "<div class='alert alert-danger'>Nội dung bài viết quá dài.</div>";
     } else {
-        if (!isset($_username)) {
+        $author_username = (string)($_SESSION['username'] ?? $_SESSION['account'] ?? '');
+        if ($author_username === '') {
             $_alert = "<div class='alert alert-danger'>Lỗi: Không thể xác định tên người dùng. Vui lòng đăng nhập lại.</div>";
         } else {
             $is_admin_post = ((int)$_admin === 1);
@@ -163,50 +177,55 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 forum_delete_uploaded_images($uploaded_images);
                 $_alert = "<div class='alert alert-danger'>" . implode('<br>', $upload_errors) . "</div>";
             } else {
-            $stmt_player_name = $conn->prepare("SELECT p.name FROM player p JOIN account a ON a.id = p.account_id WHERE a.username = ?");
-            if (!$stmt_player_name) {
-                $_alert = "<div class='alert alert-danger'>Lỗi chuẩn bị câu lệnh SQL lấy tên người chơi: " . $conn->error . "</div>";
-            } else {
-                $stmt_player_name->bind_param("s", $_username);
-                $stmt_player_name->execute();
-                $result_player_name = $stmt_player_name->get_result();
-                $row_player_name = $result_player_name->fetch_assoc();
-                $_name = $row_player_name['name'] ?? 'Guest';
-
-                $stmt_player_name->close();
-
                 // Admin posts are auto-pinned (ghimbai=1) to appear in the top section
                 $ghimbai_value = $is_admin_post ? 1 : 0;
                 $image_value = !empty($uploaded_images)
                     ? json_encode($uploaded_images, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)
                     : null;
-                $stmt_insert_post = $conn->prepare("INSERT INTO posts (tieude, noidung, username, ghimbai, image) VALUES (?, ?, ?, ?, ?)");
-                if (!$stmt_insert_post) {
+                if ($image_value !== null && strlen($image_value) > 255) {
                     forum_delete_uploaded_images($uploaded_images);
-                    $_alert = "<div class='alert alert-danger'>Lỗi chuẩn bị câu lệnh SQL đăng bài: " . $conn->error . "</div>";
+                    $_alert = "<div class='alert alert-danger'>Danh sách ảnh vượt giới hạn lưu trữ. Vui lòng chọn ít ảnh hơn.</div>";
                 } else {
-                    $stmt_insert_post->bind_param("sssis", $tieude, $noidung, $_name, $ghimbai_value, $image_value);
-
-                    if ($stmt_insert_post->execute()) {
-                        $stmt_update_tichdiem = $conn->prepare("UPDATE account SET tichdiem = tichdiem + 1 WHERE username = ?");
-                        if (!$stmt_update_tichdiem) {
-                            $_alert = "<div class='alert alert-danger'>Lỗi chuẩn bị câu lệnh SQL cập nhật tích điểm: " . $conn->error . "</div>";
-                        } else {
-                            $stmt_update_tichdiem->bind_param("s", $_username);
-                            $stmt_update_tichdiem->execute();
-                            $stmt_update_tichdiem->close();
+                    $stmt_insert_post = null;
+                    $stmt_update_tichdiem = null;
+                    $conn->begin_transaction();
+                    try {
+                        $stmt_insert_post = $conn->prepare("INSERT INTO posts (tieude, noidung, username, ghimbai, image) VALUES (?, ?, ?, ?, ?)");
+                        if (!$stmt_insert_post) {
+                            throw new RuntimeException($conn->error);
+                        }
+                        $stmt_insert_post->bind_param("sssis", $tieude, $noidung, $author_username, $ghimbai_value, $image_value);
+                        if (!$stmt_insert_post->execute()) {
+                            throw new RuntimeException($stmt_insert_post->error);
                         }
 
-                        $_SESSION['alert_message'] = "<div class='alert alert-success'>Bài viết đã được đăng thành công.</div>";
+                        $stmt_update_tichdiem = $conn->prepare("UPDATE account SET tichdiem = COALESCE(tichdiem, 0) + 1 WHERE username = ?");
+                        if (!$stmt_update_tichdiem) {
+                            throw new RuntimeException($conn->error);
+                        }
+                        $stmt_update_tichdiem->bind_param("s", $author_username);
+                        if (!$stmt_update_tichdiem->execute() || $stmt_update_tichdiem->affected_rows !== 1) {
+                            throw new RuntimeException($stmt_update_tichdiem->error ?: 'Không tìm thấy tài khoản đăng bài.');
+                        }
+
+                        $conn->commit();
+                        forum_post_set_flash('success', 'Bài viết đã được đăng thành công.');
                         header("Location: /forum.php");
                         exit();
-                    } else {
+                    } catch (Throwable $e) {
+                        $conn->rollback();
                         forum_delete_uploaded_images($uploaded_images);
-                        $_alert = "<div class='alert alert-danger'>Lỗi khi đăng bài viết: " . $stmt_insert_post->error . "</div>";
+                        error_log('Lỗi đăng bài: ' . $e->getMessage());
+                        $_alert = "<div class='alert alert-danger'>Không thể đăng bài viết. Vui lòng thử lại.</div>";
+                    } finally {
+                        if ($stmt_insert_post instanceof mysqli_stmt) {
+                            $stmt_insert_post->close();
+                        }
+                        if ($stmt_update_tichdiem instanceof mysqli_stmt) {
+                            $stmt_update_tichdiem->close();
+                        }
                     }
-                    $stmt_insert_post->close();
                 }
-            }
             }
         }
     }
@@ -517,13 +536,14 @@ mysqli_close($conn);
                                 <h2>Đăng Bài Viết Mới</h2>
                                 <p class="post-help">Điền tiêu đề và nội dung bài viết của bạn.</p>
                                 <form id="postForm" method="POST" action="" enctype="multipart/form-data">
+                                    <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars(forum_post_csrf_token(), ENT_QUOTES, 'UTF-8'); ?>" />
                                     <div class="form-field">
                                         <label for="tieude">Tiêu đề</label>
-                                        <input class="form-control" id="tieude" name="tieude" type="text" value="" maxlength="120" required />
+                                        <input class="form-control" id="tieude" name="tieude" type="text" value="<?php echo htmlspecialchars($tieude, ENT_QUOTES, 'UTF-8'); ?>" maxlength="75" required />
                                     </div>
                                     <div class="form-field">
                                         <label for="noidung">Nội dung</label>
-                                        <textarea class="form-control" id="noidung" name="noidung" rows="8" required></textarea>
+                                        <textarea class="form-control" id="noidung" name="noidung" rows="8" maxlength="60000" required><?php echo htmlspecialchars($noidung, ENT_QUOTES, 'UTF-8'); ?></textarea>
                                     </div>
                                     <?php if ((int)$_admin === 1): ?>
                                         <div class="form-field">

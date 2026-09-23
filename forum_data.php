@@ -7,6 +7,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 
 require_once __DIR__ . '/connect.php'; // Đảm bảo connect.php được include để có $conn
+require_once __DIR__ . '/forum_post_helpers.php';
 
 // Khởi tạo các biến mặc định
 $is_logged_in = false;
@@ -167,13 +168,16 @@ $sql_pinned = "
         p.username,
         p.created_at,
         p.ghimbai,
-        a.admin,
+        GREATEST(COALESCE(a.admin, 0), COALESCE(a.is_admin, 0)) AS admin,
         pl.gender,
         pl.head
     FROM
         posts p
     LEFT JOIN
-        account a ON p.username = a.username
+        account a ON a.id = COALESCE(
+            (SELECT au.id FROM account au WHERE au.username = p.username LIMIT 1),
+            (SELECT legacy_player.account_id FROM player legacy_player WHERE legacy_player.name = p.username LIMIT 1)
+        )
     LEFT JOIN
         player pl ON a.id = pl.account_id
     WHERE
@@ -185,6 +189,7 @@ $result_pinned = $conn->query($sql_pinned);
 $pinned_posts = [];
 if ($result_pinned) {
     while ($row = $result_pinned->fetch_assoc()) {
+        $row['tieude'] = forum_post_normalize_legacy_text($row['tieude'] ?? '');
         $row['avatar_url'] = get_post_avatar_url($row['admin'] ?? 0, $row['gender'] ?? 0, $row['head'] ?? 0, $row['ghimbai'] ?? 0);
         $pinned_posts[] = $row;
     }
@@ -230,13 +235,16 @@ $sql_unpinned = "
         p.username,
         p.created_at,
         p.ghimbai,
-        a.admin,
+        GREATEST(COALESCE(a.admin, 0), COALESCE(a.is_admin, 0)) AS admin,
         pl.gender,
         pl.head
     FROM
         posts p
     LEFT JOIN
-        account a ON p.username = a.username
+        account a ON a.id = COALESCE(
+            (SELECT au.id FROM account au WHERE au.username = p.username LIMIT 1),
+            (SELECT legacy_player.account_id FROM player legacy_player WHERE legacy_player.name = p.username LIMIT 1)
+        )
     LEFT JOIN
         player pl ON a.id = pl.account_id
     WHERE
@@ -252,6 +260,7 @@ if ($stmt_unpinned) {
     $stmt_unpinned->execute();
     $result_unpinned = $stmt_unpinned->get_result();
     while ($row = $result_unpinned->fetch_assoc()) {
+        $row['tieude'] = forum_post_normalize_legacy_text($row['tieude'] ?? '');
         $row['avatar_url'] = get_post_avatar_url($row['admin'] ?? 0, $row['gender'] ?? 0, $row['head'] ?? 0, $row['ghimbai'] ?? 0);
         $unpinned_posts[] = $row;
     }

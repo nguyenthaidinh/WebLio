@@ -77,18 +77,19 @@ require_once __DIR__ . '/data_post.php';
                 <?php if ($post_detail !== null): ?>
                     <form action="edit-post.php?id=<?php echo htmlspecialchars($post_id); ?>" method="POST"
                         class="post-creation-form">
+                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars(forum_post_csrf_token(), ENT_QUOTES, 'UTF-8'); ?>">
                         <input type="hidden" name="post_id" value="<?php echo htmlspecialchars($post_id); ?>">
 
                         <div class="form-group">
                             <label for="tieude">Tiêu đề:</label>
                             <input type="text" id="tieude" name="tieude" class="form-control"
-                                value="<?php echo htmlspecialchars($post_detail['tieude']); ?>" required>
+                                value="<?php echo htmlspecialchars($post_detail['tieude'], ENT_QUOTES, 'UTF-8'); ?>" maxlength="75" required>
                         </div>
 
                         <div class="form-group mt-3">
                             <label for="noidung">Nội dung:</label>
                             <textarea id="noidung" name="noidung" class="form-control" rows="10"
-                                required><?php echo htmlspecialchars($post_detail['noidung']); ?></textarea>
+                                maxlength="60000" required><?php echo htmlspecialchars($post_detail['noidung'], ENT_QUOTES, 'UTF-8'); ?></textarea>
                         </div>
 
                         <button type="submit" name="submit_edit" class="btn btn-primary mt-3">Cập nhật bài viết</button>
@@ -103,29 +104,29 @@ require_once __DIR__ . '/data_post.php';
 
         <script>
             const form = document.querySelector('.post-creation-form');
-            const submitBtn = form.querySelector('button[type="submit"]');
-            const submitError = form.querySelector('#submit-error');
-            const tieudeInput = document.getElementById('tieude');
-            const noidungTextarea = document.getElementById('noidung');
+            if (form) {
+                const submitBtn = form.querySelector('button[type="submit"]');
+                const submitError = form.querySelector('#submit-error');
+                const tieudeInput = document.getElementById('tieude');
+                const noidungTextarea = document.getElementById('noidung');
 
-            form.addEventListener('submit', (event) => {
-                const titleLength = tieudeInput.value.trim().length;
-                const contentLength = noidungTextarea.value.trim().replace(/<[^>]*>?/gm, '').length;
+                form.addEventListener('submit', (event) => {
+                    const titleLength = tieudeInput.value.trim().length;
+                    const contentLength = noidungTextarea.value.trim().replace(/<[^>]*>?/gm, '').length;
 
-                if (titleLength < 5 || contentLength < 10) {
-                    event.preventDefault();
-                    toastr.error('Tiêu đề và nội dung phải có ít nhất 5/10 ký tự!');
-                    if (submitError) {
-                        submitError.innerHTML = '<strong>Lỗi:</strong> Tiêu đề và nội dung phải có ít nhất 5/10 ký tự!';
-                        submitError.style.display = 'block';
-                        submitBtn.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }
-                } else {
-                    if (submitError) {
+                    if (titleLength < 5 || contentLength < 10) {
+                        event.preventDefault();
+                        toastr.error('Tiêu đề và nội dung phải có ít nhất 5/10 ký tự!');
+                        if (submitError) {
+                            submitError.innerHTML = '<strong>Lỗi:</strong> Tiêu đề và nội dung phải có ít nhất 5/10 ký tự!';
+                            submitError.style.display = 'block';
+                            submitBtn.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                    } else if (submitError) {
                         submitError.style.display = 'none';
                     }
-                }
-            });
+                });
+            }
         </script>
     </div>
 
