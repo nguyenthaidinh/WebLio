@@ -5,8 +5,11 @@ function game_server_configs(): array
     return [
         '1' => [
             'name' => 'Server 1',
-            'host' => '103.67.197.241',
-            'port' => (int)(getenv('NRO_DB_S1_PORT') ?: 14445),
+            // Website and MariaDB currently run on the same machine.
+            // Keep these overridable so deployment does not confuse the game port
+            // (14445) with the MySQL port (3306).
+            'host' => getenv('NRO_DB_S1_HOST') ?: '127.0.0.1',
+            'port' => (int)(getenv('NRO_DB_S1_PORT') ?: 3306),
             'game_port' => 14445,
             'database' => 'team2026',
             'username' => 'liodev',
@@ -14,17 +17,7 @@ function game_server_configs(): array
             'admin_api_url' => getenv('NRO_ADMIN_API_S1_URL') ?: 'http://127.0.0.1:18081',
             'admin_api_token' => getenv('NRO_ADMIN_API_S1_TOKEN') ?: '',
         ],
-        '2' => [
-            'name' => 'Server 2',
-            'host' => '103.67.197.241',
-            'port' => (int)(getenv('NRO_DB_S2_PORT') ?: 14446),
-            'game_port' => 14446,
-            'database' => 'awnv3',
-            'username' => 'liodev',
-            'password' => 'liopass',
-            'admin_api_url' => getenv('NRO_ADMIN_API_S2_URL') ?: 'http://127.0.0.1:18082',
-            'admin_api_token' => getenv('NRO_ADMIN_API_S2_TOKEN') ?: '',
-        ],
+        // Server 2 (awnv3) is intentionally omitted until its database is ready.
     ];
 }
 
@@ -35,9 +28,40 @@ function game_server_config(string $serverId): ?array
     return $servers[$serverId] ?? null;
 }
 
+/**
+ * Servers exposed to the Java Admin API dashboard.
+ *
+ * Keep this list separate from game_server_configs(): Server 2 can be managed
+ * from the admin dashboard without enabling it for website login/registration.
+ */
+function admin_runtime_server_configs(): array
+{
+    $gameServers = game_server_configs();
+
+    return [
+        '1' => $gameServers['1'],
+        '2' => [
+            'name' => 'Server 2',
+            'game_port' => 14446,
+            'database' => 'awnv3',
+            'admin_api_url' => getenv('NRO_ADMIN_API_S2_URL') ?: 'http://127.0.0.1:18082',
+            'admin_api_token' => getenv('NRO_ADMIN_API_S2_TOKEN') ?: '',
+        ],
+    ];
+}
+
+function admin_runtime_server_config(string $serverId): ?array
+{
+    $servers = admin_runtime_server_configs();
+
+    return $servers[$serverId] ?? null;
+}
+
 function current_game_server_id(): string
 {
-    return (string)($_SESSION['server_id'] ?? '1');
+    $serverId = (string)($_SESSION['server_id'] ?? '1');
+
+    return game_server_config($serverId) !== null ? $serverId : '1';
 }
 
 function is_server_one(): bool

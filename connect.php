@@ -6,8 +6,10 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-$selected_server_id = (string)($_SESSION['server_id'] ?? '1');
+$selected_server_id = current_game_server_id();
 $selected_server = game_server_config($selected_server_id) ?? game_server_config('1');
+$_SESSION['server_id'] = $selected_server_id;
+$_SESSION['server_name'] = $selected_server['name'];
 
 $ip_sv = $selected_server['host'];
 $port_sv = $selected_server['port'];

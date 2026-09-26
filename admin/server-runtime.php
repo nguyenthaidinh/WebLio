@@ -12,10 +12,11 @@ if (empty($_SESSION['runtime_admin_csrf'])) {
     $_SESSION['runtime_admin_csrf'] = bin2hex(random_bytes(32));
 }
 
-$servers = game_server_configs();
-$targetServer = (string)($_POST['target_server'] ?? $_GET['server'] ?? '2');
+$servers = admin_runtime_server_configs();
+$defaultServer = (string)(array_key_first($servers) ?? '1');
+$targetServer = (string)($_POST['target_server'] ?? $_GET['server'] ?? $defaultServer);
 if (!isset($servers[$targetServer])) {
-    $targetServer = '2';
+    $targetServer = $defaultServer;
 }
 
 function runtime_h($value): string

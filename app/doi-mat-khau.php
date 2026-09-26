@@ -1,8 +1,9 @@
 <?php
 // doi-mat-khau.php - Xử lý đổi mật khẩu và hiển thị form
 error_reporting(E_ALL);
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
+ini_set('display_errors', 0);
+ini_set('display_startup_errors', 0);
+ini_set('log_errors', 1);
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
@@ -24,7 +25,13 @@ if (!isset($is_logged_in)) {
 // Xử lý yêu cầu POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'changepass') {
     header('Content-Type: application/json');
-    error_log("DEBUG: Session data: " . print_r($_SESSION, true));
+
+    $postedCsrfToken = (string)($_POST['csrf_token'] ?? '');
+    if ($postedCsrfToken === '' || !hash_equals($_SESSION['csrf_token'], $postedCsrfToken)) {
+        http_response_code(403);
+        echo json_encode(['success' => false, 'message' => 'Phiên bảo mật không hợp lệ. Vui lòng tải lại trang.']);
+        exit();
+    }
 
     // Kiểm tra đăng nhập
     if (!$is_logged_in || !isset($_SESSION['user_id']) || $_SESSION['user_id'] <= 0) {
@@ -37,11 +44,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $newPassword = $_POST['newPassword'] ?? '';
     $confirmPassword = $_POST['confirmPassword'] ?? '';
     $userId = $_SESSION['user_id'];
-
-    error_log("DEBUG: currentPassword (nhập): '" . $currentPassword . "'");
-    error_log("DEBUG: newPassword (nhập): '" . $newPassword . "'");
-    error_log("DEBUG: confirmPassword (nhập): '" . $confirmPassword . "'");
-    error_log("DEBUG: User ID từ session: " . $userId);
 
     // Kiểm tra các trường không được rỗng
     if (empty($currentPassword) || empty($newPassword) || empty($confirmPassword)) {
@@ -82,9 +84,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $user = $result->fetch_assoc();
     $passwordFromDb = $user['password']; // Lấy mật khẩu dạng PLAINTEXT từ DB
     $stmt->close();
-
-    error_log("DEBUG: Mật khẩu từ DB: '" . $passwordFromDb . "'");
-    error_log("DEBUG: Mật khẩu hiện tại nhập vào (plain): '" . $currentPassword . "'");
 
     // So sánh mật khẩu hiện tại trực tiếp (PLAINTEXT)
     if ($currentPassword !== $passwordFromDb) { // So sánh trực tiếp
@@ -396,8 +395,6 @@ if ($is_logged_in) {
                 formData += '&action=' + action;
 
                 console.log("Đang gửi AJAX đến:", "/app/doi-mat-khau.php");
-                console.log("Dữ liệu FormData đang được gửi:", formData);
-
                 $.post("/app/doi-mat-khau.php", formData)
                     .done(function(response) {
                         console.log("AJAX thành công. Phản hồi thô:", response);

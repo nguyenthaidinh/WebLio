@@ -4,7 +4,7 @@ require_once __DIR__ . '/../server_config.php';
 
 function admin_api_request(string $serverId, string $method, string $path, ?array $payload = null): array
 {
-    $config = game_server_config($serverId);
+    $config = admin_runtime_server_config($serverId);
     if (!$config) {
         return admin_api_failure(0, 'Máy chủ không tồn tại.');
     }

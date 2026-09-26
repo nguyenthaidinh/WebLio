@@ -3,7 +3,11 @@ include_once 'set.php';
 include_once 'connect.php';
 if ($_login == null) { header("Location: /app/login.php"); exit(); }
 
-header('Location: /admin/server-runtime.php?server=2#runtime-players');
+$runtimeServer = (string)($_GET['server'] ?? '1');
+if (admin_runtime_server_config($runtimeServer) === null) {
+    $runtimeServer = '1';
+}
+header('Location: /admin/server-runtime.php?server=' . rawurlencode($runtimeServer) . '#runtime-players');
 exit();
 
 $_alert = '';

@@ -3,17 +3,27 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 error_reporting(E_ALL);
-ini_set('display_errors', 1);
+ini_set('display_errors', 0);
+ini_set('log_errors', 1);
 if (isset($_SESSION['user_id'])) {
     header('Location: /forum.php');
     exit();
 }
 header('Content-Type: application/json');
-$host = '103.67.197.241';
-$port = 14445;
-$dbname = 'team2026';
-$user = 'liodev';
-$pass = 'liopass';
+require_once __DIR__ . '/../server_config.php';
+
+$serverId = (string)($_POST['server'] ?? '1');
+$serverConfig = game_server_config($serverId);
+if ($serverConfig === null) {
+    echo json_encode(['status' => 'error', 'message' => 'Server bạn chọn không hợp lệ.']);
+    exit();
+}
+
+$host = $serverConfig['host'];
+$port = $serverConfig['port'];
+$dbname = $serverConfig['database'];
+$user = $serverConfig['username'];
+$pass = $serverConfig['password'];
 $pdo = null;
 
 try {
@@ -29,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'regis
     $username = trim($_POST['user'] ?? '');
     $password = $_POST['pass'] ?? '';
     $rePassword = $_POST['repass'] ?? '';
-    $server = $_POST['server'] ?? '';
+    $server = $serverId;
     $ip_address = $_SERVER['REMOTE_ADDR'];
     $email = '';
     if (empty($username) || empty($password) || empty($rePassword) || empty($server)) {

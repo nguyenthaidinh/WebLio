@@ -372,10 +372,6 @@
 									<input type="radio" name="server" value="1" checked required />
 									<span>Server 1</span>
 								</label>
-								<label class="server-label">
-									<input type="radio" name="server" value="2" required />
-									<span>Server 2</span>
-								</label>
 							</div>
 
 							<div id="loginMessage" class="message" style="display:none;"></div>

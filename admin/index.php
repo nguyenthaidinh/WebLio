@@ -32,13 +32,14 @@ $today_trades = admin_count_query($conn, "SELECT COUNT(*) FROM history_transacti
 $today_gold_spends = admin_count_query($conn, "SELECT COUNT(*) FROM gold_bar_spend_history WHERE created_at >= CURDATE() AND created_at < DATE_ADD(CURDATE(), INTERVAL 1 DAY)");
 
 $admin_name = $_username ?? 'admin';
+$runtime_servers = admin_runtime_server_configs();
 $quick_items = [
     [
         'title' => 'Điều khiển máy chủ',
         'desc' => 'Trạng thái runtime và thao tác trực tiếp qua Java Admin API.',
-        'href' => '/admin/server-runtime.php?server=2',
+        'href' => '/admin/server-runtime.php?server=1',
         'icon' => 'fas fa-server',
-        'meta' => 'Server 2',
+        'meta' => 'Server 1',
         'priority' => true,
     ],
     [
@@ -83,26 +84,23 @@ $quick_items = [
     ],
     [
         'title' => 'Nhân vật',
-        'desc' => 'Xem và sửa thông tin nhân vật.',
-        'href' => '/admin/players.php',
+        'desc' => 'Xem nhân vật đang online theo máy chủ.',
+        'runtime_section' => 'runtime-players',
         'icon' => 'fas fa-user',
-        'meta' => number_format($total_players, 0, ',', '.') . ' nhân vật',
         'priority' => false,
     ],
     [
         'title' => 'Buff vật phẩm',
         'desc' => 'Thêm vật phẩm vào hành trang người chơi.',
-        'href' => '/admin/server-runtime.php?server=2#runtime-items',
+        'runtime_section' => 'runtime-items',
         'icon' => 'fas fa-box',
-        'meta' => 'Item',
         'priority' => false,
     ],
     [
         'title' => 'Cộng chỉ số',
         'desc' => 'Chỉnh sức mạnh, tiềm năng, HP, KI.',
-        'href' => '/admin/server-runtime.php?server=2#runtime-stats',
+        'runtime_section' => 'runtime-stats',
         'icon' => 'fas fa-chart-line',
-        'meta' => 'Chỉ số',
         'priority' => false,
     ],
     [
@@ -448,6 +446,25 @@ $sidebar_items = [
             padding: 5px 9px;
             white-space: nowrap;
         }
+        .action-server-links {
+            display: flex;
+            gap: 6px;
+        }
+        .action-server-link {
+            background: #f8fafc;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            color: #475569;
+            font-size: 11px;
+            font-weight: 900;
+            padding: 6px 10px;
+            white-space: nowrap;
+        }
+        .action-server-link:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
         .admin-footer {
             color: var(--muted);
             font-size: 12px;
@@ -591,14 +608,26 @@ $sidebar_items = [
 
             <section class="actions-grid">
                 <?php foreach ($quick_items as $item) : ?>
-                    <a class="action-card <?php echo !empty($item['priority']) ? 'priority' : ''; ?>" href="<?php echo admin_h($item['href']); ?>">
-                        <div class="action-icon"><i class="<?php echo admin_h($item['icon']); ?>"></i></div>
-                        <div>
-                            <h3 class="action-title"><?php echo admin_h($item['title']); ?></h3>
-                            <p class="action-desc"><?php echo admin_h($item['desc']); ?></p>
+                    <?php if (!empty($item['runtime_section'])) : ?>
+                        <div class="action-card <?php echo !empty($item['priority']) ? 'priority' : ''; ?>">
+                            <div class="action-icon"><i class="<?php echo admin_h($item['icon']); ?>"></i></div>
+                            <div>
+                                <h3 class="action-title"><?php echo admin_h($item['title']); ?></h3>
+                                <p class="action-desc"><?php echo admin_h($item['desc']); ?></p>
+                            </div>
+                            <div class="action-server-links" aria-label="Chọn máy chủ">
+                                <?php foreach ($runtime_servers as $serverId => $serverConfig) : ?>
+                                    <a class="action-server-link" href="/admin/server-runtime.php?server=<?php echo admin_h($serverId); ?>#<?php echo admin_h($item['runtime_section']); ?>">SV<?php echo admin_h($serverId); ?></a>
+                                <?php endforeach; ?>
+                            </div>
                         </div>
-                        <div class="action-meta"><?php echo admin_h($item['meta']); ?></div>
-                    </a>
+                    <?php else : ?>
+                        <a class="action-card <?php echo !empty($item['priority']) ? 'priority' : ''; ?>" href="<?php echo admin_h($item['href']); ?>">
+                            <div class="action-icon"><i class="<?php echo admin_h($item['icon']); ?>"></i></div>
+                            <div><h3 class="action-title"><?php echo admin_h($item['title']); ?></h3><p class="action-desc"><?php echo admin_h($item['desc']); ?></p></div>
+                            <div class="action-meta"><?php echo admin_h($item['meta']); ?></div>
+                        </a>
+                    <?php endif; ?>
                 <?php endforeach; ?>
             </section>
 

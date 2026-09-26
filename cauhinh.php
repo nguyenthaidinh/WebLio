@@ -1,5 +1,5 @@
 <?php
-$_domain = 'http://nro.liodev.io.vn'; // điền domain của sự kiện giới thiệu của bạn
+$_domain = 'https://nro.liodev.io.vn'; // điền domain của sự kiện giới thiệu của bạn
 $_IP = '180.93.54.5'; // IP hiển thị ở phần cuối trang
 
 // MySQL cua Server 1; cong game va cong MySQL la hai cau hinh rieng.
