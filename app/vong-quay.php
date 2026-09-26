@@ -859,477 +859,527 @@ if ($wheel_config_json === false) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vòng Quay May Mắn - Lio Universe</title>
     <link rel="icon" href="/images/favicon-48x48.ico" type="image/x-icon">
-    <link rel="stylesheet" href="/view/static/css/template.css?v=1.10">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="/view/static/css/template.css?v=2.0">
+    <link rel="stylesheet" href="/view/static/css/eff.css?v=1.00">
     <link rel="stylesheet" href="/view/static/css/w3.css?v=1.01">
-    <link rel="stylesheet" href="/view/static/css/styleSheet.css?v=1.1">
+    <link rel="stylesheet" href="/view/static/css/styleSheet.css?v=2.1">
+    <link rel="stylesheet" href="/view/static/css/forum.css?v=2.1">
     <script src="/view/static/js/disable_devtools.js"></script>
     <style>
         .lucky-wrap {
             max-width: 820px;
             margin: 0 auto;
-            color: #2d1600;
         }
+
         .lucky-panel {
-            background: linear-gradient(180deg, #fffaf0 0%, #fff7e4 52%, #fff0cf 100%);
-            border: 1px solid #efbd67;
-            border-radius: 8px;
-            padding: 18px;
-            margin: 10px;
+            background: rgba(255, 255, 255, 0.96) !important;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1.5px solid rgba(226, 232, 240, 0.95) !important;
+            border-radius: 28px !important;
+            padding: 30px 24px !important;
+            margin: 10px auto !important;
             text-align: center;
-            box-shadow: 0 14px 32px rgba(124, 45, 18, 0.18);
+            box-shadow: 0 15px 35px -5px rgba(2, 132, 199, 0.12), 0 0 0 1px rgba(255, 255, 255, 0.8) inset !important;
+            position: relative;
+            overflow: hidden;
         }
+
+        .lucky-panel::before {
+            content: "";
+            position: absolute;
+            top: -80px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 360px;
+            height: 180px;
+            background: radial-gradient(ellipse, rgba(249, 115, 22, 0.15) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
         .lucky-panel h2 {
-            color: #7c2d12;
-            font-size: 22px;
-            margin: 0 0 10px;
-            font-weight: 900;
+            font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif !important;
+            font-size: 26px !important;
+            font-weight: 900 !important;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 45%, #f59e0b 100%) !important;
+            -webkit-background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            margin: 0 0 16px !important;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            filter: drop-shadow(0 2px 8px rgba(249, 115, 22, 0.25));
         }
+
         .lucky-status {
             display: flex;
             justify-content: center;
             gap: 10px;
             flex-wrap: wrap;
-            margin: 10px 0 12px;
+            margin: 12px 0 14px;
+        }
+
+        .lucky-status span {
+            background: #ffffff !important;
+            border: 1.5px solid #e2e8f0 !important;
+            border-radius: 12px !important;
+            padding: 8px 14px !important;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03) !important;
+            font-size: 13px !important;
+            font-weight: 700 !important;
+            color: #334155 !important;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .lucky-status span:hover {
+            transform: translateY(-1px);
+            border-color: #cbd5e1;
+        }
+
+        .lucky-status strong {
             font-weight: 800;
         }
-        .lucky-status span {
-            background: #fff;
-            border: 1px solid #f0c27b;
-            border-radius: 8px;
-            padding: 7px 11px;
-            box-shadow: 0 2px 5px rgba(124, 45, 18, 0.08);
+
+        #remainingSpinsText {
+            color: #f97316 !important;
         }
-        .lucky-status strong {
-            color: #b45309;
+
+        #pendingGoldText {
+            color: #b45309 !important;
         }
+
         .lucky-note {
-            margin: 0 0 10px;
-            color: #7c2d12;
-            font-size: 12px;
-            font-weight: 700;
+            margin: 0 auto 16px;
+            max-width: 620px;
+            background: #fffbeb;
+            border: 1px solid #fef08a;
+            border-radius: 12px;
+            padding: 9px 16px;
+            color: #92400e;
+            font-size: 12.5px;
+            font-weight: 600;
+            line-height: 1.5;
         }
+
         .action-row {
             display: flex;
             justify-content: center;
-            gap: 8px;
+            gap: 10px;
             flex-wrap: wrap;
-            margin: 12px 0 12px;
+            margin: 16px 0 18px;
         }
-        .spin-result-card {
-            position: relative;
-            overflow: hidden;
-            max-width: 520px;
-            margin: 12px auto 14px;
-            border-radius: 10px;
-            padding: 14px;
-            border: 1px solid rgba(250, 204, 21, 0.8);
-            background: linear-gradient(135deg, #fff7cc 0%, #fff 42%, #ffedd5 100%);
-            box-shadow: 0 8px 22px rgba(180, 83, 9, 0.25);
-            color: #7c2d12;
+
+        .checkin-button,
+        .spin-button,
+        .spin-bulk-button {
+            border: none !important;
+            border-radius: 12px !important;
+            color: #ffffff !important;
+            font-family: 'Outfit', sans-serif !important;
+            font-weight: 800 !important;
+            font-size: 13.5px !important;
+            padding: 11px 22px !important;
+            cursor: pointer !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 8px !important;
+            letter-spacing: 0.3px !important;
+            transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            box-sizing: border-box !important;
         }
-        .spin-result-card::before {
-            content: "";
-            position: absolute;
-            inset: -40% auto auto -20%;
-            width: 180px;
-            height: 180px;
-            background: radial-gradient(circle, rgba(251, 191, 36, 0.45), transparent 68%);
-            pointer-events: none;
+
+        .checkin-button {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3) !important;
         }
-        .spin-result-card.miss {
-            border-color: rgba(148, 163, 184, 0.55);
-            background: linear-gradient(135deg, #f8fafc 0%, #fff 55%, #e2e8f0 100%);
-            box-shadow: 0 8px 18px rgba(51, 65, 85, 0.16);
+        .checkin-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(16, 185, 129, 0.45) !important;
         }
-        .spin-result-card.bulk {
-            border-color: rgba(234, 88, 12, 0.45);
-            background: linear-gradient(135deg, #fff7ed 0%, #fff 42%, #fef3c7 100%);
+
+        .spin-button {
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%) !important;
+            box-shadow: 0 4px 14px rgba(249, 115, 22, 0.35) !important;
         }
-        .result-eyebrow {
-            position: relative;
-            display: inline-block;
-            border-radius: 999px;
-            padding: 4px 11px;
-            background: #7c2d12;
-            color: #fff;
-            font-size: 11px;
-            font-weight: 900;
-            text-transform: uppercase;
+        .spin-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 22px rgba(249, 115, 22, 0.5) !important;
         }
-        .spin-result-card.miss .result-eyebrow {
-            background: #64748b;
+
+        .spin-bulk-button {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+            box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35) !important;
         }
-        .result-title {
-            position: relative;
-            margin-top: 8px;
-            font-size: 16px;
-            font-weight: 900;
-            color: #7c2d12;
+        .spin-bulk-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 22px rgba(239, 68, 68, 0.5) !important;
         }
-        .result-prize {
-            position: relative;
-            margin-top: 6px;
-            font-size: 30px;
-            line-height: 1;
-            font-weight: 900;
-            color: #ea580c;
-            text-shadow: 0 2px 0 rgba(255,255,255,0.9);
+
+        .checkin-button:disabled,
+        .spin-button:disabled,
+        .spin-bulk-button:disabled {
+            background: #cbd5e1 !important;
+            color: #64748b !important;
+            box-shadow: none !important;
+            cursor: not-allowed !important;
+            transform: none !important;
         }
-        .spin-result-card.miss .result-prize {
-            font-size: 22px;
-            color: #475569;
+
+        .withdraw-box {
+            background: #fffbeb !important;
+            border: 1.5px solid #fde68a !important;
+            border-radius: 16px !important;
+            padding: 16px 20px !important;
+            margin: 14px auto 18px !important;
+            max-width: 440px !important;
+            box-shadow: 0 6px 18px rgba(245, 158, 11, 0.12) !important;
         }
-        .result-desc {
-            position: relative;
-            margin: 8px auto 0;
-            color: #7c2d12;
-            font-size: 12px;
-            font-weight: 800;
-            max-width: 420px;
-        }
-        .result-actions {
-            position: relative;
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 10px;
-            flex-wrap: wrap;
-        }
-        .bulk-summary {
-            position: relative;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-            gap: 7px;
-            margin-top: 12px;
-        }
-        .bulk-summary-item {
-            background: rgba(255,255,255,0.82);
-            border: 1px solid #f0c27b;
-            border-radius: 8px;
-            color: #5b2b05;
-            font-size: 11px;
-            font-weight: 900;
-            padding: 7px 8px;
-            text-align: left;
-        }
-        .bulk-summary-item strong {
+
+        .withdraw-box strong {
+            color: #92400e !important;
             display: block;
-            color: #9a3412;
-            font-size: 13px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            font-weight: 800;
         }
-        .bulk-summary-item span {
-            color: #7c2d12;
+
+        .withdraw-form {
+            display: grid !important;
+            grid-template-columns: 1fr auto !important;
+            gap: 10px !important;
         }
-        .result-link {
-            border: 0;
-            border-radius: 6px;
-            background: #f97316;
-            color: #fff;
-            font-weight: 900;
-            padding: 8px 12px;
-            text-decoration: none;
-            font-size: 12px;
+
+        .withdraw-form input {
+            border: 1.5px solid #fcd34d !important;
+            border-radius: 10px !important;
+            padding: 10px 14px !important;
+            font-size: 14px !important;
+            font-weight: 700 !important;
+            color: #78350f !important;
+            background: #ffffff !important;
+            outline: none !important;
+            transition: all 0.2s ease !important;
         }
-        .result-link.secondary {
-            background: #7c2d12;
+
+        .withdraw-form input:focus {
+            border-color: #f59e0b !important;
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.25) !important;
         }
-        .result-link:hover {
-            color: #fff;
-            text-decoration: none;
+
+        .withdraw-button {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important;
+            color: #ffffff !important;
+            border: none !important;
+            border-radius: 10px !important;
+            padding: 10px 20px !important;
+            font-weight: 800 !important;
+            font-size: 13.5px !important;
+            cursor: pointer !important;
+            box-shadow: 0 3px 10px rgba(217, 119, 6, 0.3) !important;
+            transition: all 0.2s ease !important;
         }
+
+        .withdraw-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(217, 119, 6, 0.45) !important;
+        }
+
+        /* ================================================================
+           THE FORTUNE WHEEL STYLING
+           ================================================================ */
         .wheel-area {
             position: relative;
-            width: min(84vw, 410px);
+            width: min(86vw, 420px);
             aspect-ratio: 1;
-            margin: 16px auto 10px;
+            margin: 20px auto 14px;
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(255,255,255,0.85) 0 50%, rgba(251,191,36,0.22) 51% 64%, transparent 65%);
-            padding: 12px;
+            padding: 14px;
             box-sizing: border-box;
+            background: radial-gradient(circle, #fef3c7 0%, #fed7aa 58%, transparent 72%);
+            box-shadow: 0 16px 40px -10px rgba(249, 115, 22, 0.25);
         }
+
+        .wheel-area::before {
+            content: "";
+            position: absolute;
+            inset: 3px;
+            border-radius: 50%;
+            border: 8px dotted rgba(245, 158, 11, 0.7);
+            filter: drop-shadow(0 0 4px rgba(251, 191, 36, 0.85));
+            pointer-events: none;
+            z-index: 1;
+        }
+
         .wheel-pointer {
             position: absolute;
-            top: -4px;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 34px;
+            height: 50px;
+            z-index: 10;
+            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.35));
+            transform-origin: 50% 12px;
+        }
+
+        .wheel-pointer::before {
+            content: "";
+            position: absolute;
+            top: 4px;
             left: 50%;
             transform: translateX(-50%);
             width: 0;
             height: 0;
-            border-left: 16px solid transparent;
-            border-right: 16px solid transparent;
-            border-top: 34px solid #dc2626;
-            filter: drop-shadow(0 3px 2px rgba(0,0,0,0.28));
-            z-index: 8;
-            transform-origin: 50% 2px;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 38px solid #dc2626;
+            filter: drop-shadow(0 1px 2px rgba(185, 28, 28, 0.6));
         }
+
         .wheel-pointer::after {
             content: "";
             position: absolute;
-            left: -5px;
-            top: -38px;
-            width: 10px;
-            height: 10px;
+            top: 2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 18px;
+            height: 18px;
             border-radius: 50%;
-            background: #fff;
-            border: 2px solid #7f1d1d;
+            background: radial-gradient(circle at 35% 35%, #fff 0%, #fbbf24 60%, #b45309 100%);
+            border: 2px solid #ffffff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
         }
+
         .wheel-area.is-spinning .wheel-pointer {
-            animation: pointerTick 130ms linear infinite;
+            animation: pointerTick 120ms linear infinite;
         }
+
         @keyframes pointerTick {
             0%, 100% { transform: translateX(-50%) rotate(0deg); }
-            45% { transform: translateX(-50%) rotate(-9deg); }
+            50% { transform: translateX(-50%) rotate(-8deg); }
         }
+
         .wheel {
             position: relative;
             width: 100%;
             height: 100%;
+            box-sizing: border-box;
             border-radius: 50%;
             overflow: hidden;
             background:
-                radial-gradient(circle at 50% 36%, rgba(255,255,255,0.42), transparent 24%),
+                radial-gradient(circle at 50% 36%, rgba(255,255,255,0.38), transparent 26%),
                 conic-gradient(from -90deg, <?php echo htmlspecialchars($wheel_gradient); ?>);
-            border: 12px solid #6b2708;
+            border: 12px solid #b45309;
             box-shadow:
-                inset 0 0 0 5px rgba(255,255,255,0.65),
-                inset 0 0 32px rgba(0,0,0,0.18),
-                0 16px 30px rgba(124,45,18,0.34);
+                inset 0 0 0 3px #fbbf24,
+                inset 0 0 0 6px #78350f,
+                inset 0 0 30px rgba(0, 0, 0, 0.25),
+                0 0 0 3px #fef08a,
+                0 14px 35px rgba(180, 83, 9, 0.35);
             transform: rotate(0deg);
             will-change: transform;
         }
-        .wheel::after {
-            content: "";
-            position: absolute;
-            inset: 27%;
-            border-radius: 50%;
-            background: radial-gradient(circle, #fffdf4 0%, #fff4d8 100%);
-            border: 4px solid #facc15;
-            box-shadow: 0 0 0 3px rgba(255,255,255,0.75);
-            z-index: 2;
-        }
+
         .wheel::before {
             content: "";
             position: absolute;
             inset: 0;
             border-radius: 50%;
             background:
-                radial-gradient(circle at 35% 26%, rgba(255,255,255,0.34), transparent 18%),
-                radial-gradient(circle at 50% 50%, transparent 0 55%, rgba(0,0,0,0.16) 100%);
+                radial-gradient(circle at 35% 24%, rgba(255,255,255,0.32), transparent 22%),
+                radial-gradient(circle at 50% 50%, transparent 0 54%, rgba(0,0,0,0.14) 100%);
             pointer-events: none;
             z-index: 3;
         }
+
         .wheel-separator {
             position: absolute;
             left: 50%;
             top: 50%;
             width: 50%;
-            height: 1px;
-            background: rgba(255,255,255,0.74);
+            height: 1.5px;
+            background: rgba(255, 255, 255, 0.85);
             transform: rotate(calc(var(--angle) - 90deg));
             transform-origin: 0 50%;
             z-index: 1;
             pointer-events: none;
+            box-shadow: 0 0 3px rgba(0, 0, 0, 0.25);
         }
+
         .wheel-label {
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 92px;
-            min-height: 22px;
+            width: 86px;
+            min-height: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            transform: translate(-50%, -50%) rotate(var(--angle)) translateY(-145px) rotate(90deg);
+            transform: translate(-50%, -50%) rotate(var(--angle)) translateY(-138px) rotate(var(--orient, 90deg));
             transform-origin: center;
-            color: #fff;
-            font-size: 11px;
+            color: #ffffff;
+            font-family: 'Outfit', sans-serif;
+            font-size: 11.5px;
             font-weight: 900;
-            line-height: 1.05;
+            letter-spacing: 0.4px;
+            line-height: 1;
             text-align: center;
-            text-shadow: 0 2px 3px rgba(0,0,0,0.45);
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.75), 0 0 6px rgba(0, 0, 0, 0.45);
             z-index: 1;
             pointer-events: none;
+            white-space: nowrap;
         }
+
+        /* Perfectly concentric 3D Center Button */
         .wheel-center {
             position: absolute;
-            inset: 36%;
-            z-index: 5;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 104px;
+            height: 104px;
+            z-index: 6;
             border-radius: 50%;
-            background: radial-gradient(circle at 35% 28%, #fed7aa 0%, #fb923c 28%, #ea580c 100%);
-            color: #fff;
-            display: grid;
-            place-items: center;
+            background: radial-gradient(circle at 36% 28%, #fff7ed 0%, #fdba74 25%, #f97316 65%, #c2410c 100%);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            font-family: 'Outfit', sans-serif;
             font-weight: 900;
-            font-size: 15px;
-            line-height: 1;
-            text-align: center;
+            font-size: 17px;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
-            border: 4px solid #fff;
-            box-shadow: 0 5px 14px rgba(124,45,18,0.28);
+            border: 4px solid #ffffff;
+            box-shadow:
+                0 0 0 4px #fbbf24,
+                0 0 0 10px #ffffff,
+                0 0 0 13px #f59e0b,
+                0 10px 25px rgba(180, 83, 9, 0.4),
+                inset 0 3px 5px rgba(255, 255, 255, 0.75),
+                inset 0 -4px 8px rgba(154, 52, 18, 0.5);
             cursor: pointer;
             outline: 0;
-            transition: transform 0.18s ease, filter 0.18s ease, box-shadow 0.18s ease;
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            text-shadow: 0 2px 4px rgba(124, 45, 18, 0.6);
         }
-        .wheel-center:hover {
-            filter: brightness(1.06);
-            transform: scale(1.03);
-            box-shadow: 0 7px 18px rgba(124,45,18,0.34);
+
+        .wheel-center:hover:not(:disabled) {
+            transform: translate(-50%, -50%) scale(1.05);
+            box-shadow:
+                0 0 0 4px #fbbf24,
+                0 0 0 10px #ffffff,
+                0 0 0 14px #ea580c,
+                0 14px 30px rgba(234, 88, 12, 0.55),
+                inset 0 3px 5px rgba(255, 255, 255, 0.9),
+                inset 0 -4px 8px rgba(154, 52, 18, 0.5);
+            filter: brightness(1.05);
         }
-        .wheel-center:active {
-            transform: scale(0.98);
+
+        .wheel-center:active:not(:disabled) {
+            transform: translate(-50%, -50%) scale(0.96);
         }
+
         .wheel-center:disabled {
-            background: linear-gradient(180deg, #cbd5e1 0%, #94a3b8 100%);
-            cursor: not-allowed;
-            filter: none;
-            transform: none;
+            background: linear-gradient(135deg, #cbd5e1 0%, #94a3b8 100%) !important;
+            border-color: #f1f5f9 !important;
+            box-shadow:
+                0 0 0 4px #cbd5e1,
+                0 0 0 10px #ffffff,
+                0 0 0 13px #94a3b8 !important;
+            cursor: not-allowed !important;
+            color: #64748b !important;
+            text-shadow: none !important;
         }
-        .wheel.has-result {
-            transform: rotate(var(--settled-rotation, 0deg));
-        }
-        .wheel-area.is-spinning .wheel-center,
-        .wheel-area.is-settling .wheel-center {
-            pointer-events: none;
-        }
+
         .spin-live-status {
             min-height: 28px;
             margin: 8px auto 4px;
-            color: #7c2d12;
-            font-size: 12px;
-            font-weight: 900;
+            color: #92400e;
+            font-size: 13px;
+            font-weight: 800;
         }
         .spin-live-status.is-active {
-            color: #b45309;
+            color: #ea580c;
         }
+
         .reward-pills {
             display: flex;
             flex-wrap: wrap;
-            gap: 6px;
+            gap: 8px;
             justify-content: center;
-            margin: 8px auto 14px;
-            max-width: 620px;
+            margin: 14px auto 16px;
+            max-width: 680px;
         }
+
         .reward-pill {
             align-items: center;
-            background: rgba(255,255,255,0.78);
-            border: 1px solid #f0c27b;
-            border-radius: 8px;
-            color: #5b2b05;
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 20px;
+            color: #334155;
             display: inline-flex;
-            font-size: 11px;
-            font-weight: 900;
-            gap: 5px;
-            padding: 5px 8px;
+            font-size: 12px;
+            font-weight: 800;
+            gap: 6px;
+            padding: 6px 12px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+            transition: all 0.2s ease;
         }
+
+        .reward-pill:hover {
+            transform: translateY(-2px);
+            border-color: #f97316;
+            box-shadow: 0 4px 10px rgba(249, 115, 22, 0.15);
+        }
+
         .reward-pill i {
             border-radius: 50%;
-            box-shadow: 0 0 0 2px rgba(255,255,255,0.75);
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.85);
             display: inline-block;
-            height: 9px;
-            width: 9px;
+            height: 10px;
+            width: 10px;
         }
-        .spin-button,
-        .spin-bulk-button,
-        .checkin-button,
-        .withdraw-button {
-            border: 0;
-            border-radius: 8px;
-            color: #fff;
-            font-weight: 900;
-            padding: 11px 18px;
-            cursor: pointer;
-            box-shadow: 0 5px 12px rgba(124,45,18,0.16);
-        }
-        .spin-button {
-            background: #f97316;
-        }
-        .spin-bulk-button {
-            background: #dc2626;
-        }
-        .checkin-button {
-            background: #16a34a;
-        }
-        .withdraw-button {
-            background: #b45309;
-        }
-        .spin-button:disabled,
-        .spin-bulk-button:disabled,
-        .checkin-button:disabled,
-        .withdraw-button:disabled {
-            background: #9ca3af;
-            cursor: not-allowed;
-        }
-        .withdraw-box {
-            background: linear-gradient(180deg, #fff 0%, #fff8ec 100%);
-            border: 1px solid #f0c27b;
-            border-radius: 10px;
-            padding: 12px;
-            margin: 12px auto;
-            max-width: 410px;
-            box-shadow: 0 5px 14px rgba(124,45,18,0.12);
-        }
-        .withdraw-box strong {
-            color: #7c2d12;
-            display: block;
-            margin-bottom: 8px;
-        }
-        .withdraw-form {
-            display: grid;
-            grid-template-columns: 1fr auto;
-            gap: 8px;
-        }
-        .withdraw-form input {
-            border: 1px solid #f0c27b;
-            border-radius: 6px;
-            padding: 9px;
-            min-width: 0;
-        }
-        .message {
-            border-radius: 6px;
-            padding: 9px;
-            margin: 10px 0;
-            font-weight: 800;
-        }
-        .message.success {
-            background: #dcfce7;
-            color: #166534;
-            border: 1px solid #86efac;
-        }
-        .message.warning {
-            background: #fef3c7;
-            color: #92400e;
-            border: 1px solid #fcd34d;
-        }
-        .message.error {
-            background: #fee2e2;
-            color: #991b1b;
-            border: 1px solid #fca5a5;
-        }
+
         .quick-links {
             display: flex;
             justify-content: center;
-            gap: 12px;
+            gap: 10px;
             flex-wrap: wrap;
-            margin-top: 12px;
-            font-size: 12px;
+            margin-top: 18px;
         }
-        .quick-links a {
-            color: #b45309;
-            font-weight: 800;
-        }
-        @media (max-width: 420px) {
+
+        @media (max-width: 480px) {
             .lucky-panel {
-                padding: 13px;
+                padding: 20px 14px !important;
+                border-radius: 20px !important;
+            }
+            .lucky-panel h2 {
+                font-size: 21px !important;
             }
             .wheel-area {
-                padding: 9px;
+                padding: 10px;
             }
             .wheel-label {
-                width: 64px;
-                font-size: 9px;
-                transform: translate(-50%, -50%) rotate(var(--angle)) translateY(-116px) rotate(90deg);
+                width: 70px;
+                font-size: 10px;
+                transform: translate(-50%, -50%) rotate(var(--angle)) translateY(-120px) rotate(var(--orient, 90deg));
+            }
+            .wheel-center {
+                width: 88px;
+                height: 88px;
+                font-size: 15px;
             }
             .withdraw-form {
                 grid-template-columns: 1fr;
@@ -1338,43 +1388,56 @@ if ($wheel_config_json === false) {
     </style>
 </head>
 <body>
-    <div class="body_body">
-        <div class="left_top"></div>
-        <div class="bg_top"><div class="right_top"></div></div>
-        <div class="body-content">
-            <div class="a" align="center"><img src="/images/logo_liodev.svg" height="90" alt="Logo"></div>
-            <div id="top">
-                <div class="link-more">
-                    <div class="h" align="center">
-                        <div class="menu2" style="background: #561d00;">
-                            <table width="100%" border="0" cellspacing="4">
-                                <tr class="menu">
-                                    <td><a href="/">Trang Chủ</a></td>
-                                    <td><a href="/forum.php">Diễn Đàn</a></td>
-                                </tr>
-                            </table>
-                        </div>
+    <div class="snowEffect">
+        <canvas id="snowcanvas" height="100%" width="100%"></canvas>
+    </div>
 
-                        <div class="body">
-                            <div class="lucky-wrap">
-                                <div class="lucky-panel">
-                                    <h2>Vòng Quay May Mắn</h2>
+    <div class="body_body">
+        <a href="#" id="backTop"><img id='backTopimg' src='/images/favicon-32x32.png' alt='top' /></a>
+
+        <div class="div-12">
+            <img height=12 src="/images/18-1.png" style="vertical-align: middle;" />
+            <span style="vertical-align: middle;">Dành cho người chơi trên 18 tuổi. Chơi quá 180 phút mỗi ngày sẽ hại sức khỏe.</span>
+        </div>
+
+        <div class="body-content">
+            <div class="bg-content2">
+                <h1 class="a">
+                    <a href="/" title="Lio Universe - Chiến Binh Vũ Trụ">
+                        <img height=105 src="/images/logo_liodev.svg" alt="Lio Universe - Chiến Binh Vũ Trụ" />
+                    </a>
+                </h1>
+
+                <div id="top">
+                    <div class="link-more">
+                        <div class="h">
+                            <div class="menu2">
+                                <table width="100%" cellspacing="4">
+                                    <tr class="menu">
+                                        <td><a href="/trang-chu.php">Trang Chủ</a></td>
+                                        <td><a href="/gioi-thieu.php">Giới Thiệu</a></td>
+                                        <td><a href="/forum.php" title="Diễn Đàn">Diễn Đàn</a></td>
+                                        <td><a href="https://www.facebook.com/ntdinh24/" target="_blank">Fanpage</a></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="body">
+                    <div class="lucky-wrap">
+                        <div class="lucky-panel">
+                            <h2><i class="bi bi-stars"></i> Vòng Quay May Mắn</h2>
 
                                     <?php if (!$is_logged_in): ?>
                                         <div class="message error">Bạn cần đăng nhập để quay.</div>
-                                        <div class="quick-links"><a href="/app/login.php">Đăng nhập</a></div>
-                                    <?php else: ?>
-                                        <div class="lucky-status">
-                                            <span>Nhân vật: <strong><?php echo htmlspecialchars($player_name); ?></strong></span>
-                                            <span>Lượt quay: <strong id="remainingSpinsText"><?php echo number_format($remaining_spins, 0, ',', '.'); ?></strong></span>
-                                            <span>TV chờ rút: <strong id="pendingGoldText"><?php echo number_format($pending_gold, 0, ',', '.'); ?></strong></span>
-                                            <span id="checkinStatusText"><?php echo $checked_in_today ? 'Đã điểm danh hôm nay' : 'Chưa điểm danh hôm nay'; ?></span>
-                                        </div>
-                                        <p class="lucky-note">Mỗi ngày điểm danh nhận 1 lượt quay. Tích lũy 10.000 = 1 lượt quay. Trúng TV sẽ vào kho chờ rút; thoát game trước khi rút TV.</p>
-
-                                        <?php if ($checkin_table_error !== ''): ?>
-                                            <div class="message error"><?php echo htmlspecialchars($checkin_table_error); ?></div>
-                                        <?php endif; ?>
+                                        <div class="quick-links">
+                    <a href="/forum.php" class="user-action-btn standard"><i class="bi bi-chat-left-text"></i> Về diễn đàn</a>
+                    <a href="/app/nap-ngoc.php" class="user-action-btn primary"><i class="bi bi-wallet2"></i> Nạp tiền</a>
+                    <a href="/app/doi-vang.php" class="user-action-btn gold"><i class="bi bi-cash-stack"></i> Đổi thỏi vàng</a>
+                </div>
+            <?php endif; ?>
 
                                         <div id="spinResultSlot">
                                             <?php if (is_array($spin_result)): ?>
@@ -1433,32 +1496,32 @@ if ($wheel_config_json === false) {
                                         </div>
 
                                         <div class="action-row">
-                                            <form method="post" action="/app/vong-quay.php">
-                                                <input type="hidden" name="action" value="daily_checkin">
-                                                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
-                                                <button class="checkin-button" type="submit" <?php echo ($checked_in_today || !$checkin_table_ready) ? 'disabled' : ''; ?>>
-                                                    Điểm danh
-                                                </button>
-                                            </form>
+                    <form method="post" action="/app/vong-quay.php">
+                        <input type="hidden" name="action" value="daily_checkin">
+                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
+                        <button class="checkin-button" type="submit" <?php echo ($checked_in_today || !$checkin_table_ready) ? 'disabled' : ''; ?>>
+                            <i class="bi bi-calendar-check-fill"></i> Điểm danh
+                        </button>
+                    </form>
 
-                                            <form id="luckySpinForm" method="post" action="/app/vong-quay.php">
-                                                <input type="hidden" name="action" value="lucky_spin">
-                                                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
-                                                <button class="spin-button" type="submit" <?php echo $remaining_spins <= 0 ? 'disabled' : ''; ?>>
-                                                    Quay ngay
-                                                </button>
-                                            </form>
+                    <form id="luckySpinForm" method="post" action="/app/vong-quay.php">
+                        <input type="hidden" name="action" value="lucky_spin">
+                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
+                        <button class="spin-button" type="submit" <?php echo $remaining_spins <= 0 ? 'disabled' : ''; ?>>
+                            <i class="bi bi-play-circle-fill"></i> Quay ngay
+                        </button>
+                    </form>
 
-                                            <form id="luckySpinBulkForm" method="post" action="/app/vong-quay.php">
-                                                <input type="hidden" name="action" value="lucky_spin_bulk">
-                                                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
-                                                <button class="spin-bulk-button" type="submit" <?php echo $remaining_spins < BULK_SPIN_COUNT ? 'disabled' : ''; ?>>
-                                                    Quay 100 lần
-                                                </button>
-                                            </form>
-                                        </div>
+                    <form id="luckySpinBulkForm" method="post" action="/app/vong-quay.php">
+                        <input type="hidden" name="action" value="lucky_spin_bulk">
+                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
+                        <button class="spin-bulk-button" type="submit" <?php echo $remaining_spins < BULK_SPIN_COUNT ? 'disabled' : ''; ?>>
+                            <i class="bi bi-lightning-charge-fill"></i> Quay 100 lần
+                        </button>
+                    </form>
+                </div>
 
-                                        <div id="withdrawGoldSlot">
+                <div id="withdrawGoldSlot">
                                         <?php if ($pending_gold > 0): ?>
                                             <div class="withdraw-box" id="withdrawGold">
                                                 <strong>Rút thỏi vàng vào túi đồ</strong>
@@ -1476,15 +1539,22 @@ if ($wheel_config_json === false) {
                                             <div class="wheel-pointer"></div>
                                             <div id="luckyWheel" class="<?php echo htmlspecialchars($wheel_class); ?>" data-current-rotation="<?php echo htmlspecialchars($wheel_settled_rotation_text !== '' ? $wheel_settled_rotation_text : '0'); ?>"<?php if ($wheel_settled_rotation_text !== ''): ?> style="--settled-rotation: <?php echo htmlspecialchars($wheel_settled_rotation_text); ?>deg;" data-settled-rotation="<?php echo htmlspecialchars($wheel_settled_rotation_text); ?>"<?php endif; ?>>
                                                 <?php foreach ($wheel_segments as $segment): ?>
-                                                    <span class="wheel-separator" style="--angle: <?php echo htmlspecialchars(lucky_format_degrees($segment['start'])); ?>deg;"></span>
-                                                    <?php if ((float)$segment['degrees'] >= 7): ?>
-                                                        <span class="wheel-label" style="--angle: <?php echo htmlspecialchars(lucky_format_degrees($segment['center'])); ?>deg;">
-                                                            <?php echo htmlspecialchars($segment['label']); ?>
-                                                        </span>
-                                                    <?php endif; ?>
-                                                <?php endforeach; ?>
-                                            </div>
-                                            <button id="wheelCenterSpin" class="wheel-center" type="button" <?php echo $remaining_spins <= 0 ? 'disabled' : ''; ?>>Quay</button>
+                                        <?php
+                                            $deg = (float)$segment['center'];
+                                            // Left side: 180 to 360 deg -> orient is 90deg
+                                            // Right side: 0 to 180 deg -> orient is -90deg
+                                            $is_left = ($deg >= 180 && $deg < 360);
+                                            $label_orient = $is_left ? '90deg' : '-90deg';
+                                        ?>
+                                        <span class="wheel-separator" style="--angle: <?php echo htmlspecialchars(lucky_format_degrees($segment['start'])); ?>deg;"></span>
+                                        <?php if ((float)$segment['degrees'] >= 7): ?>
+                                            <span class="wheel-label" style="--angle: <?php echo htmlspecialchars(lucky_format_degrees($segment['center'])); ?>deg; --orient: <?php echo $label_orient; ?>;">
+                                                <?php echo htmlspecialchars($segment['label']); ?>
+                                            </span>
+                                        <?php endif; ?>
+                                    <?php endforeach; ?>
+                </div>
+                <button id="wheelCenterSpin" class="wheel-center" type="button" <?php echo $remaining_spins <= 0 ? 'disabled' : ''; ?>>Quay</button> class="wheel-center" type="button" <?php echo $remaining_spins <= 0 ? 'disabled' : ''; ?>>Quay</button>
                                         </div>
                                         <div class="spin-live-status" id="spinLiveStatus"></div>
 

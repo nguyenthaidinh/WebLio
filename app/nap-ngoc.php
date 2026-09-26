@@ -243,18 +243,34 @@ $transfer_content = 'Hãy để mặc định';
                             <div class="body">
                                 <div class="box_inputboxx" style="width:100%">
                                     <?php if ($is_logged_in) : ?>
-                                        <div id="user-info" style="color:white; text-align:center; padding: 10px; background-color: #f38500; border-radius: 8px;">
-                                            <img src="<?php echo htmlspecialchars($user_avatar); ?>" alt="Avatar" class="user-avatar" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; margin-bottom: 10px;">
-                                            <div class="user-details"><br>
-                                                <span style="font-weight: bold;">Xin chào: <?php echo htmlspecialchars($display_player_name); ?></span><br>
-                                                <span style="white-space: nowrap; color: yellow; font-weight: bold;">Số dư: <?php echo number_format($user_vnd, 0, ',', '.'); ?> VND</span><br>
-                                                <a href="/app/doi-vang.php" style="color: cyan;">Đổi Thỏi Vàng</a><br>
-                                                <a href="/app/doi-mat-khau.php" style="color: cyan;">Đổi mật khẩu</a><br>
-                                                <a href="/app/logout.php" style="color: cyan;">Đăng xuất</a><br>
-                                                <a href="/app/vong-quay.php" style="color: cyan;">Vòng Quay May Mắn</a><br>
+                                        <div id="user-info" class="user-profile-card">
+                                            <div class="user-profile-header">
+                                                <div class="user-avatar-wrap">
+                                                    <img src="<?php echo htmlspecialchars($user_avatar ?: '/images/avatar/default_avatar.png'); ?>" alt="Avatar" class="user-avatar-img" onerror="this.src='/images/favicon-32x32.png'">
+                                                    <span class="user-status-dot" title="Đang trực tuyến"></span>
+                                                </div>
+                                                <div class="user-profile-meta">
+                                                    <div class="user-greeting-row">
+                                                        <span class="greeting-prefix">Xin chào,</span>
+                                                        <span class="user-name-bold"><?php echo htmlspecialchars($display_player_name); ?></span>
+                                                        <?php if (!empty($is_admin_for_avatar)): ?>
+                                                            <span class="user-badge-role admin">Admin</span>
+                                                        <?php endif; ?>
+                                                    </div>
+                                                    <div class="user-sub-info">
+                                                        <span class="user-badge-server"><span class="server-dot"></span>Server 1</span>
+                                                        <span class="user-balance-badge"><i class="bi bi-coin"></i> <?php echo number_format($user_vnd ?? 0, 0, ',', '.'); ?> VND</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="user-actions-grid">
+                                                <a href="/app/doi-vang.php" class="user-action-btn gold"><i class="bi bi-cash-stack"></i> Đổi Thỏi Vàng</a>
+                                                <a href="/app/vong-quay.php" class="user-action-btn lucky"><i class="bi bi-disc"></i> Vòng Quay</a>
+                                                <a href="/app/doi-mat-khau.php" class="user-action-btn standard"><i class="bi bi-shield-lock"></i> Đổi mật khẩu</a>
                                                 <?php if (!empty($is_admin_for_avatar)): ?>
-                                                    <a href="/admin/" style="color: cyan;">Admin</a><br>
+                                                    <a href="/admin/" class="user-action-btn admin"><i class="bi bi-gear-fill"></i> Admin</a>
                                                 <?php endif; ?>
+                                                <a href="/app/logout.php" class="user-action-btn logout"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
                                             </div>
                                         </div>
                                     <?php else : ?>
