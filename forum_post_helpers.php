@@ -10,6 +10,29 @@ function forum_post_text_length(string $value): int
     return $matched === false ? strlen($value) : $matched;
 }
 
+function forum_post_ini_size_to_bytes($value): int
+{
+    $value = trim((string)$value);
+    if ($value === '') {
+        return 0;
+    }
+
+    $unit = strtolower(substr($value, -1));
+    $size = (float)$value;
+    switch ($unit) {
+        case 'g':
+            $size *= 1024;
+            // Fall through.
+        case 'm':
+            $size *= 1024;
+            // Fall through.
+        case 'k':
+            $size *= 1024;
+    }
+
+    return (int)$size;
+}
+
 function forum_post_normalize_legacy_text($value): string
 {
     return html_entity_decode((string)$value, ENT_QUOTES | ENT_HTML5, 'UTF-8');

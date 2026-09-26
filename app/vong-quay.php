@@ -857,7 +857,7 @@ if ($wheel_config_json === false) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vòng Quay May Mắn - Chú Bé Rồng Online</title>
+    <title>Vòng Quay May Mắn - Lio Universe</title>
     <link rel="icon" href="/images/favicon-48x48.ico" type="image/x-icon">
     <link rel="stylesheet" href="/view/static/css/template.css?v=1.10">
     <link rel="stylesheet" href="/view/static/css/w3.css?v=1.01">
@@ -1342,7 +1342,7 @@ if ($wheel_config_json === false) {
         <div class="left_top"></div>
         <div class="bg_top"><div class="right_top"></div></div>
         <div class="body-content">
-            <div class="a" align="center"><img src="/images/logo_sk_he.png" height="90" alt="Logo"></div>
+            <div class="a" align="center"><img src="/images/logo_liodev.svg" height="90" alt="Logo"></div>
             <div id="top">
                 <div class="link-more">
                     <div class="h" align="center">

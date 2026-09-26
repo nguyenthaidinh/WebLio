@@ -12,8 +12,8 @@ require_once 'post_detail_logic.php';
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="content-language" content="vi" />
         <title><?php echo $post_detail ? htmlspecialchars($post_detail['tieude']) : 'Bài viết không tồn tại'; ?> - Diễn Đàn</title>
-        <meta name="keywords" content="Chú Bé Rồng Online, Ngọc Rồng Online, game ngoc rong, game 7 viên ngọc rồng" />
-        <meta name="description" content="Ngoc Rong Online, Ngọc Rồng Mobile, Dragon Ball Online" />
+        <meta name="keywords" content="Lio Universe, Lio Online, Chien Binh Vu Tru, LioDev, Dien Dan" />
+        <meta name="description" content="Diễn đàn trao đổi thảo luận Lio Universe - Phát triển bởi LioDev" />
         <meta name="robots" content="INDEX,FOLLOW" />
         <link rel="apple-touch-icon" href="/images/favicon-48x48.ico" />
         <link rel="icon" href="/images/favicon-48x48.ico" type="image/x-icon" />
@@ -338,8 +338,8 @@ require_once 'post_detail_logic.php';
         <div class="body-content">
             <div class="bg-content2">
                 <h1 class="a">
-                    <a href="/" title="game bảy viên Chú Bé Rồng Online">
-                        <img height="90" src="/images/logo_sk_he.png" alt="game bảy viên Chú Bé Rồng Online" /></a>
+                    <a href="/" title="Lio Universe - Chiến Binh Vũ Trụ">
+                        <img height="105" src="/images/logo_liodev.svg" alt="Lio Universe - Chiến Binh Vũ Trụ" /></a>
                 </h1>
                 <div id="top">
                     <div class="link-more">
@@ -656,7 +656,7 @@ require_once 'post_detail_logic.php';
     </div>
 
     <div class="copyright">
-        <b>Bản quyền thuộc về Chú Bé Rồng Online - 2013</b>
+        <b>Bản quyền thuộc về LioDev - 2026</b>
         <div class="code-by-lio">Developed & Optimized by <span class="lio-badge">Code by Lio</span></div>
     </div>
 

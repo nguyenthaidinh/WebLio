@@ -15,9 +15,9 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trang Chủ - Chú Bé Rồng Onlines - Ngọc Rồng Online</title>
-    <meta name="keywords" content="Chú Bé Rồng Online,ngoc rong mobile, game ngoc rong, game 7 vien ngoc rong, game bay vien ngoc rong" />
-    <meta name="description" content="Website chính thức của Chú Bé Rồng Online – Game Bay Vien Ngọc Rồng Mobile nhập vai trực tuyến trên máy tính và điện thoại về Game 7 Viên Ngọc Rồng hấp dẫn nhất hiện nay!" />
+    <title>Diễn Đàn - Lio Universe | Chiến Binh Vũ Trụ - LioDev</title>
+    <meta name="keywords" content="Lio Universe, Lio Online, Chien Binh Vu Tru, Dien Dan, LioDev, Game Nhap Vai Truc Tuyen" />
+    <meta name="description" content="Diễn đàn cộng đồng game thủ Lio Universe - Nơi giao lưu, thảo luận và hỗ trợ người chơi phát triển bởi LioDev!" />
     <meta http-equiv="refresh" content="600" />
     <meta name="robots" content="INDEX,FOLLOW" />
 
@@ -68,8 +68,8 @@ $conn->close();
         <div class="body-content">
             <div class="bg-content2">
                 <h1 class="a">
-                    <a href="/" title="game bảy viên Chú Bé Rồng Online">
-                        <img height=90 src="/images/logo_sk_he.png" alt="game bảy viên Chú Bé Rồng Online" /></a>
+                    <a href="/" title="Lio Universe - Chiến Binh Vũ Trụ">
+                        <img height=105 src="/images/logo_liodev.svg" alt="Lio Universe - Chiến Binh Vũ Trụ" /></a>
                 </h1>
                 <div id="top">
                     <div class="link-more">
@@ -156,8 +156,8 @@ $conn->close();
                                 <div id="box_login_ads">
     <div id="columns" style="text-align:center">
         <figure>
-            <a href="https://drive.google.com/drive/u/0/folders/1rcvGxxtDYhqyFgm91XHHIBzespPmzGA8" title="CHÚ BÉ RỒNG ONLINE" target="_blank" rel="noopener noreferrer">
-                <img height="35" src="/images/macos.png" alt="CHÚ BÉ RỒNG ONLINE">
+            <a href="https://drive.google.com/drive/u/0/folders/1rcvGxxtDYhqyFgm91XHHIBzespPmzGA8" title="Lio Universe" target="_blank" rel="noopener noreferrer">
+                <img height="35" src="/images/macos.png" alt="Lio Universe">
             </a>
             <figcaption><span style="color:rgb(209, 9, 50);">MacOS</span>
                 <br> <br>
@@ -165,8 +165,8 @@ $conn->close();
         </figure>
 
         <figure>
-            <a href="https://drive.google.com/drive/folders/1CdvJLR2HYk6C4b3U815eN5xElB4AypD8" title="CHÚ BÉ RỒNG ONLINE" target="_blank" rel="noopener noreferrer">
-                <img height="35" src="/images/android.png" alt="CHÚ BÉ RỒNG ONLINE">
+            <a href="https://drive.google.com/drive/folders/1CdvJLR2HYk6C4b3U815eN5xElB4AypD8" title="Lio Universe" target="_blank" rel="noopener noreferrer">
+                <img height="35" src="/images/android.png" alt="Lio Universe">
             </a>
             <figcaption><span style="color:rgb(209, 9, 50);">APK</span>
                 <br> <br>
@@ -175,7 +175,7 @@ $conn->close();
 
         <figure>
             <span title="Đang phát triển">
-                <img height="35" src="/images/play.png" alt="CHÚ BÉ RỒNG ONLINE">
+                <img height="35" src="/images/play.png" alt="Lio Universe">
             </span>
             <figcaption><span style="color:rgb(209, 9, 50);">Sắp ra mắt</span>
                 <br> <br>
@@ -183,8 +183,8 @@ $conn->close();
         </figure>
 
         <figure>
-            <a href="https://drive.google.com/drive/folders/1YgI0e39HlEzV9IVUSZgQcCw9_M-K8tfd" title="CHÚ BÉ RỒNG ONLINE" target="_blank" rel="noopener noreferrer">
-                <img height="35" src="/images/pc.png" alt="CHÚ BÉ RỒNG ONLINE">
+            <a href="https://drive.google.com/drive/folders/1YgI0e39HlEzV9IVUSZgQcCw9_M-K8tfd" title="Lio Universe" target="_blank" rel="noopener noreferrer">
+                <img height="35" src="/images/pc.png" alt="Lio Universe">
             </a>
             <figcaption><span style="color:rgb(209, 9, 50);">PC</span>
                 <br> <br>
@@ -192,8 +192,8 @@ $conn->close();
         </figure>
 
         <figure>
-            <a href="https://drive.google.com/drive/u/0/folders/1gajpRFf_RCJlgQo7J8GBPZ78R2Yfo7oj" title="CHÚ BÉ RỒNG ONLINE" target="_blank" rel="noopener noreferrer">
-                <img style="margin-bottom:0px" height="35" src="/images/ip.png" alt="CHÚ BÉ RỒNG ONLINE">
+            <a href="https://drive.google.com/drive/u/0/folders/1gajpRFf_RCJlgQo7J8GBPZ78R2Yfo7oj" title="Lio Universe" target="_blank" rel="noopener noreferrer">
+                <img style="margin-bottom:0px" height="35" src="/images/ip.png" alt="Lio Universe">
             </a>
             <figcaption><span style="color:rgb(209, 9, 50);">iOS</span>
                 <br> <br>
@@ -281,7 +281,7 @@ $conn->close();
                                                         </div>
                                                     </div>
                                                     <div class="copyright" style="line-height: 13px">
-                                                        <b>Bản quyền thuộc về Chú Bé Rồng Online - 2013</b>
+                                                        <b>Bản quyền thuộc về LioDev - 2026</b>
                                                         <div class="code-by-lio">Developed & Optimized by <span class="lio-badge">Code by Lio</span></div>
                                         </div>
                                             <script src="/view/static/js/ThreeCanvas.js" type="text/javascript"></script>

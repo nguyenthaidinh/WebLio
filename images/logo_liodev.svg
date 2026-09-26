@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 135" width="100%" height="100%">
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="25%" stop-color="#fde047" />
+      <stop offset="60%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#b45309" />
+    </linearGradient>
+    <linearGradient id="fireGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fb923c" />
+      <stop offset="50%" stop-color="#f97316" />
+      <stop offset="100%" stop-color="#ea580c" />
+    </linearGradient>
+    <linearGradient id="haloGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="50%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#f97316" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+    <filter id="dropShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#0f172a" flood-opacity="0.5" />
+    </filter>
+  </defs>
+
+  <!-- Radiant Solar Flare Halo -->
+  <g transform="translate(300, 48)">
+    <circle r="46" fill="#fde047" opacity="0.3" filter="url(#glow)" />
+    <circle r="36" fill="url(#goldGrad)" opacity="0.35" />
+    <!-- Sunburst Flares -->
+    <path d="M 0 -48 L 5 -36 L -5 -36 Z" fill="#f59e0b" />
+    <path d="M 0 48 L 5 36 L -5 36 Z" fill="#f59e0b" />
+    <path d="M -48 0 L -36 5 L -36 -5 Z" fill="#f59e0b" />
+    <path d="M 48 0 L 36 5 L 36 -5 Z" fill="#f59e0b" />
+    <path d="M -34 -34 L -25 -30 L -30 -25 Z" fill="#f59e0b" />
+    <path d="M 34 -34 L 25 -30 L 30 -25 Z" fill="#f59e0b" />
+    <path d="M -34 34 L -25 30 L -30 25 Z" fill="#f59e0b" />
+    <path d="M 34 34 L 25 30 L 30 25 Z" fill="#f59e0b" />
+  </g>
+
+  <!-- Wing Wings Silhouette Behind -->
+  <g filter="url(#dropShadow)">
+    <path d="M 100 68 Q 160 22 230 42 Q 170 58 130 74 Z" fill="url(#fireGrad)" opacity="0.9" />
+    <path d="M 500 68 Q 440 22 370 42 Q 430 58 470 74 Z" fill="url(#fireGrad)" opacity="0.9" />
+  </g>
+
+  <!-- Main 3D Text: LIO UNIVERSE -->
+  <!-- Shadow / Extrusion -->
+  <text x="300" y="74" 
+        font-family="'Outfit', 'Impact', 'Segoe UI Black', sans-serif" 
+        font-size="52" 
+        font-weight="900" 
+        text-anchor="middle" 
+        letter-spacing="2.5"
+        fill="#7c2d12" 
+        stroke="#431407" 
+        stroke-width="9" 
+        stroke-linejoin="round">
+    LIO UNIVERSE
+  </text>
+  
+  <!-- Metallic Golden Core -->
+  <text x="300" y="72" 
+        font-family="'Outfit', 'Impact', 'Segoe UI Black', sans-serif" 
+        font-size="52" 
+        font-weight="900" 
+        text-anchor="middle" 
+        letter-spacing="2.5"
+        fill="url(#goldGrad)" 
+        stroke="#d97706" 
+        stroke-width="1.8">
+    LIO UNIVERSE
+  </text>
+
+  <!-- White Shimmer Top Outline -->
+  <text x="300" y="70.5" 
+        font-family="'Outfit', 'Impact', 'Segoe UI Black', sans-serif" 
+        font-size="52" 
+        font-weight="900" 
+        text-anchor="middle" 
+        letter-spacing="2.5"
+        fill="none" 
+        stroke="#ffffff" 
+        stroke-width="1.2"
+        opacity="0.8">
+    LIO UNIVERSE
+  </text>
+
+  <!-- Sub-ribbon Banner: CHIẾN BINH VŨ TRỤ -->
+  <g transform="translate(300, 102)" filter="url(#dropShadow)">
+    <path d="M -160 -15 L 160 -15 L 145 10 L -145 10 Z" fill="#0f172a" stroke="#f59e0b" stroke-width="1.5" />
+    <!-- Ribbon ends -->
+    <polygon points="-160,-15 -145,10 -170,12" fill="#0284c7" />
+    <polygon points="160,-15 145,10 170,12" fill="#0284c7" />
+
+    <!-- Subtitle Text -->
+    <text x="0" y="3" 
+          font-family="'Outfit', 'Segoe UI', sans-serif" 
+          font-size="13" 
+          font-weight="800" 
+          text-anchor="middle" 
+          letter-spacing="3" 
+          fill="#38bdf8">
+      CHIẾN BINH VŨ TRỤ
+    </text>
+
+    <!-- Glowing Stars -->
+    <circle cx="-120" cy="-2" r="2.5" fill="#fde047" />
+    <circle cx="120" cy="-2" r="2.5" fill="#fde047" />
+  </g>
+
+  <!-- Official LioDev Pill Badge -->
+  <g transform="translate(300, 125)">
+    <rect x="-65" y="-8" width="130" height="17" rx="8.5" fill="#ea580c" />
+    <text x="0" y="4" 
+          font-family="'Outfit', sans-serif" 
+          font-size="9" 
+          font-weight="800" 
+          text-anchor="middle" 
+          letter-spacing="1" 
+          fill="#ffffff">
+      OFFICIAL BY LIODEV
+    </text>
+  </g>
+</svg>

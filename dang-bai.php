@@ -54,6 +54,31 @@ function forum_delete_uploaded_images($filenames)
     }
 }
 
+function forum_upload_error_message($error_code, $original_name)
+{
+    $safe_name = htmlspecialchars((string)$original_name, ENT_QUOTES, 'UTF-8');
+    $prefix = $safe_name !== '' ? 'Ảnh "' . $safe_name . '"' : 'Tệp ảnh';
+
+    switch ((int)$error_code) {
+        case UPLOAD_ERR_INI_SIZE:
+            return $prefix . ' vượt quá giới hạn ' . htmlspecialchars((string)ini_get('upload_max_filesize'), ENT_QUOTES, 'UTF-8') . ' của máy chủ.';
+        case UPLOAD_ERR_FORM_SIZE:
+            return $prefix . ' vượt quá dung lượng tối đa 5MB.';
+        case UPLOAD_ERR_PARTIAL:
+            return $prefix . ' chỉ tải lên được một phần. Vui lòng kiểm tra mạng và thử lại.';
+        case UPLOAD_ERR_NO_FILE:
+            return 'Bạn chưa chọn tệp ảnh để tải lên.';
+        case UPLOAD_ERR_NO_TMP_DIR:
+            return 'Máy chủ chưa cấu hình thư mục tạm để nhận ảnh.';
+        case UPLOAD_ERR_CANT_WRITE:
+            return 'Máy chủ không thể ghi tệp ảnh vào ổ đĩa.';
+        case UPLOAD_ERR_EXTENSION:
+            return $prefix . ' bị tiện ích PHP trên máy chủ chặn.';
+        default:
+            return $prefix . ' tải lên không thành công (mã lỗi ' . (int)$error_code . ').';
+    }
+}
+
 function forum_upload_post_images($field_name, &$errors)
 {
     $uploaded = [];
@@ -98,7 +123,7 @@ function forum_upload_post_images($field_name, &$errors)
         }
 
         if ($error_code !== UPLOAD_ERR_OK) {
-            $errors[] = 'Ảnh "' . htmlspecialchars($original_name, ENT_QUOTES, 'UTF-8') . '" tải lên không thành công.';
+            $errors[] = forum_upload_error_message($error_code, $original_name);
             continue;
         }
 
@@ -147,8 +172,13 @@ function forum_upload_post_images($field_name, &$errors)
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $tieude = isset($_POST['tieude']) && is_string($_POST['tieude']) ? trim($_POST['tieude']) : '';
     $noidung = isset($_POST['noidung']) && is_string($_POST['noidung']) ? trim($_POST['noidung']) : '';
+    $request_size = (int)($_SERVER['CONTENT_LENGTH'] ?? 0);
+    $post_max_size = forum_post_ini_size_to_bytes(ini_get('post_max_size'));
 
-    if (!forum_post_verify_csrf($_POST['csrf_token'] ?? null)) {
+    if ($post_max_size > 0 && $request_size > $post_max_size) {
+        $_alert = "<div class='alert alert-danger'>Tổng dung lượng bài viết và ảnh vượt quá giới hạn "
+            . htmlspecialchars((string)ini_get('post_max_size'), ENT_QUOTES, 'UTF-8') . " của máy chủ.</div>";
+    } elseif (!forum_post_verify_csrf($_POST['csrf_token'] ?? null)) {
         $_alert = "<div class='alert alert-danger'>Phiên bảo mật không hợp lệ. Vui lòng tải lại trang rồi thử lại.</div>";
     } elseif (forum_post_text_length($tieude) < 5 || forum_post_text_length(trim(strip_tags($noidung))) < 5) {
         $_alert = "<div class='alert alert-danger'>Tiêu đề và nội dung phải có ít nhất 5 ký tự!</div>";
@@ -239,15 +269,15 @@ mysqli_close($conn);
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width,maximum-scale=1,user-scalable=no" />
     <meta http-equiv="content-language" content="vi" />
-    <title>Đăng bài viết mới - Chú Bé Rồng Online</title>
-    <meta name="keywords" content="Chú Bé Rồng Online, Ngoc Rong Online, Ngọc Rồng Mobile" />
+    <title>Đăng bài viết mới - Lio Universe | LioDev</title>
+    <meta name="keywords" content="Lio Universe, Lio Online, Chien Binh Vu Tru, LioDev" />
     <meta name="description" content="Đăng bài viết mới" />
     <meta name="robots" content="NOINDEX,FOLLOW" />
     <link rel="apple-touch-icon" href="/images/favicon-48x48.ico" />
     <link rel="icon" href='https://forum.ngocrongonline.com/app/view/images/favicon.png' type="image/x-icon" />
     <link rel="shortcut icon" href='https://forum.ngocrongonline.com/app/view/images/favicon.png' type="image/x-icon" />
     <script src="/view/static/js/disable_devtools.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://forum.ngocrongonline.com/app/view/css/StyleSheet.css" />
+    <link rel="stylesheet" type="text/css" href="/view/static/css/styleSheet.css?v=2.0" />
     <link rel="stylesheet" href="https://forum.ngocrongonline.com/app/view/css/template.css" />
     <link rel="stylesheet" href="https://forum.ngocrongonline.com/app/view/css/w3.css">
     <link rel="stylesheet" type="text/css" href="https://forum.ngocrongonline.com/app/css/eff.css" />
@@ -521,7 +551,7 @@ mysqli_close($conn);
             <div class="right_top"></div>
         </div>
         <div class="body-content">
-            <div class="a" align="center"><img class="post-logo" src="/images/logo_sk_he.png" alt="Chú Bé Rồng Online" /></div>
+            <div class="a" align="center"><img class="post-logo" src="/images/logo_liodev.svg" alt="Lio Universe" style="height: 85px;" /></div>
             <div id="top">
                 <div class="link-more">
                     <div class="h" align="center">
@@ -548,6 +578,7 @@ mysqli_close($conn);
                                     <?php if ((int)$_admin === 1): ?>
                                         <div class="form-field">
                                             <label for="post_images">Ảnh bài viết</label>
+                                            <input type="hidden" name="MAX_FILE_SIZE" value="5242880" />
                                             <input class="form-control" id="post_images" name="post_images[]" type="file" accept="image/jpeg,image/png,image/gif,image/webp" multiple />
                                             <small class="file-help">Chọn nhiều ảnh cùng lúc. Hỗ trợ JPG, PNG, GIF, WEBP; tối đa 10 ảnh, mỗi ảnh tối đa 5MB.</small>
                                         </div>
@@ -599,9 +630,9 @@ mysqli_close($conn);
             });
         });
     </script>
-    <script src="https://ngocrongonline.com/view/static/js/ThreeCanvas.js"></script>
-    <script src="https://ngocrongonline.com/view/static/js/Snow3d.js"></script>
-    <script src="https://ngocrongonline.com/view/static/js/animation.js?v4"></script>
+    <script src="/view/static/js/ThreeCanvas.js"></script>
+    <script src="/view/static/js/Snow3d.js"></script>
+    <script src="/view/static/js/animation.js?v4"></script>
 </body>
 
 </html>

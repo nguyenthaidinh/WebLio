@@ -337,7 +337,7 @@
 </div>
 <div class="body_body">
 	<div class="body-content">
-		<div class="a"><img src="/images/logo_sk_he.png" alt="Chú Bé Rồng Online" /></div>
+		<div class="a"><img src="/images/logo_liodev.svg" alt="Lio Universe" /></div>
 		<div id="top">
 			<div class="link-more">
 				<div class="h">
@@ -350,7 +350,7 @@
 						</table>
 					</div>
 					<div class="body">
-						<div class="body-subtitle">Sử dụng tài khoản Chú Bé Rồng Online để đăng nhập.</div>
+						<div class="body-subtitle">Sử dụng tài khoản Lio Universe để đăng nhập.</div>
 						<form id="loginForm" method="POST" name="login">
 							<input type="hidden" name="action" value="login" />
 							<input type="hidden" name="keySig" value="a511129a7ce15460414e6fe318eebc2b" />
@@ -392,7 +392,7 @@
 		</div>
 	</div>
 	<div class="copyright">
-		<b>Bản quyền thuộc về Chú Bé Rồng Online - 2013</b>
+		<b>Bản quyền thuộc về LioDev - 2026</b>
 		<div class="code-by-lio">Developed & Optimized by <span class="lio-badge">Code by Lio</span></div>
 	</div>
 </div>

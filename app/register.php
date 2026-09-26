@@ -3,7 +3,7 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>Chào mừng bạn đến với Chú Bé Rồng Online - Đăng Ký Tài Khoản</title>
+	<title>Chào mừng bạn đến với Lio Universe - Đăng Ký Tài Khoản</title>
 	<link rel="stylesheet" href="https://forum.ngocrongonline.com/app/view/css/StyleSheet.css" type="text/css" />
 	<link rel="stylesheet" href="https://forum.ngocrongonline.com/app/view/css/template.css" type="text/css" />
 	<script src="/view/static/js/disable_devtools.js"></script>
@@ -321,7 +321,7 @@
 </div>
 <div class="body_body">
 	<div class="body-content">
-		<div class="a"><img src="/images/logo_sk_he.png" alt="Chú Bé Rồng Online" /></div>
+		<div class="a"><img src="/images/logo_liodev.svg" alt="Lio Universe" /></div>
 		<div id="top">
 			<div class="link-more">
 				<div class="h">
@@ -334,7 +334,7 @@
 						</table>
 					</div>
 					<div class="body">
-						<div class="body-subtitle">Đăng ký tài khoản Chú Bé Rồng Online mới.</div>
+						<div class="body-subtitle">Đăng ký tài khoản Lio Universe mới.</div>
 						<form id="registerForm" method="POST" name="register">
 							<input type="hidden" name="action" value="register" />
 							<input type="hidden" name="keySig" value="a511129a7ce15460414e6fe318eebc2b" />
@@ -376,7 +376,7 @@
 		</div>
 	</div>
 	<div class="copyright">
-		<b>Bản quyền thuộc về Chú Bé Rồng Online - 2013</b>
+		<b>Bản quyền thuộc về LioDev - 2026</b>
 		<div class="code-by-lio">Developed & Optimized by <span class="lio-badge">Code by Lio</span></div>
 	</div>
 </div>

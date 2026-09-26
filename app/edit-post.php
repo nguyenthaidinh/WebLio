@@ -7,11 +7,11 @@ require_once __DIR__ . '/data_post.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chỉnh sửa bài viết - Chú Bé Rồng Online</title>
+    <title>Chỉnh sửa bài viết - Lio Universe</title>
     <meta name="keywords"
-        content="Chú Bé Rồng Online, ngoc rong mobile, game ngoc rong, game 7 vien ngoc rong, game bay vien ngoc rong">
+        content="Lio Universe, ngoc rong mobile, game ngoc rong, game 7 vien ngoc rong, game bay vien ngoc rong">
     <meta name="description"
-        content="Website chính thức của Chú Bé Rồng Online – Game Bay Viên Ngọc Rồng Mobile nhập vai trực tuyến trên máy tính và điện thoại về Game 7 Viên Ngọc Rồng hấp dẫn nhất hiện nay!">
+        content="Website chính thức của Lio Universe – Game nhập vai chiến binh vũ trụ trực tuyến hấp dẫn hàng đầu phát triển bởi LioDev!">
     <meta http-equiv="refresh" content="600">
     <meta name="robots" content="index,follow">
 
@@ -46,7 +46,7 @@ require_once __DIR__ . '/data_post.php';
         <canvas id="snowcanvas" height="100%" width="100%"></canvas>
     </div>
     <div class="body-content">
-        <h1 class="a"><img src="/images/logo_sk_he.png" alt="Chú Bé Rồng Online" /></h1>
+        <h1 class="a"><img src="/images/logo_liodev.svg" alt="Lio Universe" /></h1>
         <div id="top">
             <div class="link-more">
                 <div class="h">

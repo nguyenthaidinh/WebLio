@@ -156,9 +156,9 @@ if ($is_logged_in) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đổi Mật Khẩu - Chú Bé Rồng Online - Ngọc Rồng Online</title>
-    <meta name="keywords" content="Chú Bé Rồng Online,ngoc rong mobile, game ngoc rong, game 7 vien ngoc rong, game bay vien ngoc rong" />
-    <meta name="description" content="Website chính thức của Chú Bé Rồng Online – Game Bay Vien Ngoc Rong Mobile nhập vai trực tuyến trên máy tính và điện thoại về Game 7 Viên Ngọc Rồng hấp dẫn nhất hiện nay!" />
+    <title>Đổi Mật Khẩu - Lio Universe - Lio Universe</title>
+    <meta name="keywords" content="Lio Universe, Lio Online, Chien Binh Vu Tru, LioDev, Game Nhap Vai Truc Tuyen" />
+    <meta name="description" content="Website chính thức của Lio Universe – Game nhập vai chiến binh vũ trụ trực tuyến hấp dẫn hàng đầu phát triển bởi LioDev!" />
     <meta http-equiv="refresh" content="600" />
     <meta name="robots" content="INDEX,FOLLOW" />
 
@@ -203,8 +203,8 @@ if ($is_logged_in) {
         <div class="body-content">
             <div class="bg-content2">
                 <h1 class="a">
-                    <a href="/" title="game bảy viên Chú Bé Rồng Online">
-                        <img height=90 src="/images/logo_sk_he.png" alt="game bảy viên Chú Bé Rồng Online" />
+                    <a href="/" title="game bảy viên Lio Universe">
+                        <img height=90 src="/images/logo_liodev.svg" alt="game bảy viên Lio Universe" />
                     </a>
                 </h1>
                 <div id="top">

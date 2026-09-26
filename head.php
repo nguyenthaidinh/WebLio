@@ -124,8 +124,8 @@ if (isset($_SESSION['username']) && isset($conn)) { // Đảm bảo $conn đã c
 ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="keywords" content="Chú Bé Rồng Online,ngoc rong mobile, game ngoc rong, game 7 vien ngoc rong, game bay vien ngoc rong" />
-    <meta name="description" content="Website chính thức của Chú Bé Rồng Online – Game Bay Vien Ngọc Rồng Mobile nhập vai trực tuyến trên máy tính và điện thoại về Game 7 Viên Ngọc Rồng hấp dẫn nhất hiện nay!" />
+    <meta name="keywords" content="Lio Universe, Lio Online, Chien Binh Vu Tru, LioDev, Game Nhap Vai Truc Tuyen" />
+    <meta name="description" content="Website chính thức của Lio Universe – Game nhập vai chiến binh vũ trụ trực tuyến hấp dẫn hàng đầu trên PC và điện thoại phát triển bởi LioDev!" />
     <meta http-equiv="refresh" content="600" />
     <meta name="robots" content="INDEX,FOLLOW" />
 

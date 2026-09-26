@@ -38,9 +38,9 @@ $transfer_content = 'Hãy để mặc định';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nạp tiền - Chú Bé Rồng Online</title>
-    <meta name="keywords" content="Chú Bé Rồng Online, ngọc rồng, nạp tiền, nạp vàng">
-    <meta name="description" content="Nạp tiền thủ công, chờ admin duyệt cho Chú Bé Rồng Online.">
+    <title>Nạp tiền - Lio Universe</title>
+    <meta name="keywords" content="Lio Universe, ngọc rồng, nạp tiền, nạp vàng">
+    <meta name="description" content="Nạp tiền thủ công, chờ admin duyệt cho Lio Universe.">
     <meta http-equiv="refresh" content="600">
     <link rel="apple-touch-icon" href="/images/favicon-48x48.ico">
     <link rel="icon" href="/images/favicon-48x48.ico" type="image/x-icon">
@@ -219,8 +219,8 @@ $transfer_content = 'Hãy để mặc định';
         <div class="body-content">
             <div class="bg-content2">
                 <h1 class="a">
-                    <a href="/" title="game bảy viên Chú Bé Rồng Online">
-                        <img height="90" src="/images/logo_sk_he.png" alt="Chú Bé Rồng Online">
+                    <a href="/" title="game bảy viên Lio Universe">
+                        <img height="90" src="/images/logo_liodev.svg" alt="Lio Universe">
                     </a>
                 </h1>
                 <div id="top">

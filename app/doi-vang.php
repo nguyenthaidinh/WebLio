@@ -220,7 +220,7 @@ if ($is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đổi Thỏi Vàng - Chú Bé Rồng Online</title>
+    <title>Đổi Thỏi Vàng - Lio Universe</title>
     <link rel="icon" href="/images/favicon-48x48.ico" type="image/x-icon">
     <link rel="stylesheet" href="/view/static/css/template.css?v=1.10">
     <link rel="stylesheet" href="/view/static/css/w3.css?v=1.01">
@@ -460,7 +460,7 @@ if ($is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] 
         <div class="left_top"></div>
         <div class="bg_top"><div class="right_top"></div></div>
         <div class="body-content">
-            <div class="a" align="center"><img src="/images/logo_sk_he.png" height="90" alt="Logo"></div>
+            <div class="a" align="center"><img src="/images/logo_liodev.svg" height="90" alt="Logo"></div>
             <div id="top">
                 <div class="link-more">
                     <div class="h" align="center">

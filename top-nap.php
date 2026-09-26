@@ -6,18 +6,18 @@ require_once 'connect.php';
 <html lang="vi"> <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Bảng Xếp Hạng Top Nạp - Ngọc Rồng Online</title> <meta name="description"
-        content="Xem bảng xếp hạng Top Nạp của Chú Bé Rồng Online – Game Bay Vien Ngoc Rong Mobile hấp dẫn nhất hiện nay.">
+    <title>Bảng Xếp Hạng Top Nạp - Lio Universe</title> <meta name="description"
+        content="Xem bảng xếp hạng Top Nạp của Lio Universe – Game Bay Vien Ngoc Rong Mobile hấp dẫn nhất hiện nay.">
     <meta name="keywords"
-        content="top nạp, chú bé rồng online, ngoc rong mobile, game ngoc rong, game 7 vien ngoc rong, game bay vien ngoc rong">
+        content="top nạp, Lio Universe, Lio Online, Chien Binh Vu Tru, LioDev">
     <meta name="author" content="Mr Blue"> <meta property="og:type" content="website">
     <meta property="og:url" content="<?php echo $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; ?>">
-    <meta property="og:title" content="Bảng Xếp Hạng Top Nạp - Chú Bé Rồng Online">
-    <meta property="og:description" content="Xem bảng xếp hạng Top Nạp của Chú Bé Rồng Online – Game Bay Vien Ngoc Rong Mobile hấp dẫn nhất hiện nay.">
+    <meta property="og:title" content="Bảng Xếp Hạng Top Nạp - Lio Universe">
+    <meta property="og:description" content="Xem bảng xếp hạng Top Nạp của Lio Universe – Game Bay Vien Ngoc Rong Mobile hấp dẫn nhất hiện nay.">
     <meta property="og:image" content="/image/logo.png">
     <meta name="twitter:card" content="summary_large_image"> <meta name="twitter:url" content="<?php echo $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; ?>">
-    <meta name="twitter:title" content="Bảng Xếp Hạng Top Nạp - Chú Bé Rồng Online">
-    <meta name="twitter:description" content="Xem bảng xếp hạng Top Nạp của Chú Bé Rồng Online – Game Bay Vien Ngoc Rong Mobile hấp dẫn nhất hiện nay.">
+    <meta name="twitter:title" content="Bảng Xếp Hạng Top Nạp - Lio Universe">
+    <meta name="twitter:description" content="Xem bảng xếp hạng Top Nạp của Lio Universe – Game Bay Vien Ngoc Rong Mobile hấp dẫn nhất hiện nay.">
     <meta name="twitter:image" content="/image/logo.png">
     <link rel="apple-touch-icon" href="/image/icon.png"> <link rel="icon" href="/image/icon.png?v=99" type="image/png">
     <link rel="shortcut icon" href="/image/icon.png?v=99" type="image/x-icon">

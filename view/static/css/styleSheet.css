@@ -1,0 +1,499 @@
+/* ================================================================
+   LIODEV MODERN GAMING DESIGN SYSTEM
+   Lio Universe - Clean, Bright, Premium Glassmorphism
+   Developed by LioDev
+   ================================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+    --lio-primary: #f97316;
+    --lio-primary-dark: #ea580c;
+    --lio-primary-glow: rgba(249, 115, 22, 0.35);
+    --lio-blue: #0284c7;
+    --lio-blue-light: #38bdf8;
+    --lio-amber: #f59e0b;
+    --lio-text-dark: #0f172a;
+    --lio-text-main: #334155;
+    --lio-text-muted: #64748b;
+    --lio-glass-bg: rgba(255, 255, 255, 0.93);
+    --lio-glass-border: rgba(255, 255, 255, 0.85);
+    --lio-card-bg: rgba(248, 250, 252, 0.95);
+    --lio-card-border: rgba(226, 232, 240, 0.9);
+}
+
+body {
+    background: radial-gradient(ellipse at 50% 0%, #7dd3fc 0%, #38bdf8 30%, #bae6fd 65%, #f1f5f9 100%) fixed !important;
+    font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif !important;
+    color: var(--lio-text-main) !important;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+}
+
+/* Background floating particles */
+.snowEffect {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    z-index: 1;
+    pointer-events: none;
+}
+
+#snowcanvas {
+    position: fixed;
+    z-index: 0;
+}
+
+/* Main Container Layout */
+.body_body {
+    max-width: 980px !important;
+    margin: 0 auto !important;
+    padding: 24px 16px !important;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 10;
+}
+
+/* Hide legacy obsolete assets */
+.left_top, .bg_top, .right_top, .left_b_bottom, .right_b_bottom, .footer, .left_bottom, .right_bottom, .bg_tree, .foot_bg, .bg_noel {
+    display: none !important;
+}
+
+/* Notice 18+ Bar */
+.div-12 {
+    background: rgba(255, 255, 255, 0.82) !important;
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(56, 189, 248, 0.4) !important;
+    border-radius: 50px !important;
+    padding: 9px 22px !important;
+    color: #0369a1 !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    margin: 0 auto 20px auto !important;
+    max-width: 620px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(2, 132, 199, 0.12) !important;
+}
+
+/* Main Content Box - Clean Glassmorphism */
+.body-content {
+    background: var(--lio-glass-bg) !important;
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 2px solid var(--lio-glass-border) !important;
+    border-radius: 28px !important;
+    padding: 36px !important;
+    box-shadow: 0 25px 50px -12px rgba(2, 132, 199, 0.18), 0 0 35px rgba(255, 255, 255, 0.8) !important;
+    margin: 15px 0 25px 0 !important;
+    box-sizing: border-box;
+}
+
+.bg-content2 {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+}
+
+/* Header Brand Logo */
+h1.a {
+    text-align: center;
+    margin-top: 0 !important;
+    margin-bottom: 25px !important;
+    height: auto !important;
+}
+
+h1.a a {
+    display: inline-block;
+    text-decoration: none;
+}
+
+h1.a img {
+    height: 105px !important;
+    width: auto;
+    filter: drop-shadow(0 6px 16px rgba(2, 132, 199, 0.25));
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+h1.a img:hover {
+    transform: scale(1.05) translateY(-3px);
+}
+
+/* Modern Floating Navigation Menu */
+.menu2 {
+    background: rgba(255, 255, 255, 0.85) !important;
+    backdrop-filter: blur(12px);
+    border-radius: 18px !important;
+    padding: 8px 10px !important;
+    margin-bottom: 24px !important;
+    border: 1px solid rgba(56, 189, 248, 0.35) !important;
+    box-shadow: 0 8px 20px rgba(2, 132, 199, 0.08) !important;
+}
+
+.menu2 table {
+    width: 100%;
+    border-collapse: separate !important;
+    border-spacing: 6px 0 !important;
+}
+
+.menu2 td {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+}
+
+.menu2 td a {
+    display: block;
+    padding: 12px 16px;
+    color: #475569 !important;
+    font-weight: 700 !important;
+    text-decoration: none !important;
+    border-radius: 12px !important;
+    transition: all 0.28s ease !important;
+    font-size: 15px !important;
+    text-align: center;
+    letter-spacing: 0.3px;
+}
+
+.menu2 td#selected a, 
+.menu2 td a:hover {
+    background: linear-gradient(135deg, #f97316 0%, #ea580c 100%) !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 18px rgba(249, 115, 22, 0.35) !important;
+    transform: translateY(-2px);
+}
+
+/* Summer Pixel Banner Wrapper */
+.bg_top_22 {
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 30px;
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    box-shadow: 0 12px 30px rgba(2, 132, 199, 0.18);
+    position: relative;
+}
+
+.bg_top_22 img {
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: transform 0.5s ease;
+}
+
+.bg_top_22:hover img {
+    transform: scale(1.02);
+}
+
+/* Downloads Grid & Modern Cards */
+.download-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 18px;
+    margin-bottom: 35px;
+}
+
+.download-card {
+    background: #ffffff !important;
+    border: 1.5px solid rgba(226, 232, 240, 0.9) !important;
+    border-radius: 20px !important;
+    padding: 24px 18px !important;
+    text-align: center;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04) !important;
+}
+
+.download-card:hover {
+    transform: translateY(-6px);
+    border-color: #f97316 !important;
+    box-shadow: 0 16px 32px rgba(249, 115, 22, 0.18) !important;
+}
+
+.download-card img {
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.08));
+    height: 42px;
+    width: auto;
+    margin: 4px 0;
+    transition: transform 0.3s ease;
+}
+
+.download-card:hover img {
+    transform: scale(1.1);
+}
+
+.download-card .version {
+    font-size: 14px;
+    color: #0f172a;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.download-card .download-btn {
+    display: inline-block;
+    width: 80%;
+    background: linear-gradient(135deg, #f97316 0%, #ea580c 100%) !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    text-decoration: none !important;
+    padding: 11px 18px !important;
+    border-radius: 12px !important;
+    font-size: 14px !important;
+    transition: all 0.25s ease !important;
+    box-shadow: 0 4px 14px rgba(249, 115, 22, 0.3) !important;
+    border: none !important;
+    cursor: pointer;
+}
+
+.download-card .download-btn:hover {
+    background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%) !important;
+    box-shadow: 0 6px 20px rgba(249, 115, 22, 0.45) !important;
+    transform: translateY(-2px);
+}
+
+.download-card .extra-links {
+    font-size: 12px;
+    color: #64748b;
+    font-weight: 500;
+}
+
+/* Disabled download card */
+.disabled-card {
+    opacity: 0.7;
+    background: #f8fafc !important;
+}
+
+.disabled-card:hover {
+    transform: none !important;
+    border-color: rgba(226, 232, 240, 0.9) !important;
+    box-shadow: none !important;
+    cursor: not-allowed;
+}
+
+.disabled-btn {
+    background: #94a3b8 !important;
+    box-shadow: none !important;
+    cursor: not-allowed !important;
+    pointer-events: none;
+    color: #ffffff !important;
+}
+
+/* Content Sections (Giới thiệu, Tân thủ, v.v.) */
+.bg-content {
+    background: #ffffff !important;
+    border: 1.5px solid rgba(226, 232, 240, 0.85) !important;
+    border-radius: 20px !important;
+    padding: 28px !important;
+    margin-bottom: 24px !important;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.03) !important;
+}
+
+.title {
+    border-bottom: 2px solid rgba(249, 115, 22, 0.3) !important;
+    padding-bottom: 12px !important;
+    margin-bottom: 20px !important;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.title h4 {
+    font-size: 19px !important;
+    font-weight: 800 !important;
+    background: linear-gradient(135deg, #ea580c 0%, #f59e0b 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+}
+
+.content {
+    font-size: 14.5px !important;
+    line-height: 1.8 !important;
+    color: #334155 !important;
+}
+
+.content p {
+    margin-bottom: 14px !important;
+}
+
+.content strong {
+    color: #0f172a !important;
+    font-weight: 700 !important;
+}
+
+.content-p {
+    font-size: 16px !important;
+    font-weight: 800 !important;
+    color: #ea580c !important;
+    margin-top: 22px !important;
+    margin-bottom: 12px !important;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-left: 4px solid #f97316;
+    padding-left: 10px;
+}
+
+/* GIF Animations */
+.gif-container {
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+    margin: 24px 0;
+    flex-wrap: wrap;
+}
+
+.gif-container img {
+    border-radius: 12px;
+    border: 2px solid rgba(249, 115, 22, 0.25);
+    background: #f8fafc;
+    padding: 10px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.gif-container img:hover {
+    transform: scale(1.1) translateY(-4px);
+    border-color: #f97316;
+    box-shadow: 0 12px 24px rgba(249, 115, 22, 0.25);
+}
+
+/* Content Links */
+.content a {
+    color: #ea580c !important;
+    text-decoration: none !important;
+    font-weight: 700 !important;
+    transition: color 0.2s;
+}
+
+.content a:hover {
+    color: #c2410c !important;
+    text-decoration: underline !important;
+}
+
+/* Back to top button */
+#backTop {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    z-index: 99;
+    background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    opacity: 0;
+    visibility: hidden;
+    border: 2px solid #ffffff;
+    box-shadow: 0 6px 20px rgba(249, 115, 22, 0.4);
+}
+
+#backTop.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+#backTop:hover {
+    transform: scale(1.12) translateY(-3px);
+    box-shadow: 0 10px 25px rgba(249, 115, 22, 0.55);
+}
+
+#backTop img {
+    width: 22px;
+    height: 22px;
+}
+
+/* Footer & Official Copyright */
+.copyright {
+    margin-top: 35px !important;
+    text-align: center !important;
+    color: #475569 !important;
+    font-size: 13.5px !important;
+    line-height: 1.7 !important;
+    background: rgba(255, 255, 255, 0.88) !important;
+    backdrop-filter: blur(16px);
+    padding: 24px 20px !important;
+    border-radius: 20px !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.8) !important;
+    box-shadow: 0 10px 25px rgba(2, 132, 199, 0.08) !important;
+}
+
+.copyright .brand-title {
+    font-size: 15px;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 6px;
+    display: block;
+}
+
+.copyright .lio-rights {
+    font-weight: 600;
+    color: #ea580c;
+}
+
+.code-by-lio {
+    margin-top: 12px;
+    font-size: 13px;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.lio-badge {
+    background: linear-gradient(135deg, #f97316, #f59e0b) !important;
+    color: #ffffff !important;
+    font-weight: 800;
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    box-shadow: 0 2px 8px rgba(249, 115, 22, 0.35);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .body_body {
+        padding: 14px 10px !important;
+    }
+    .body-content {
+        padding: 20px 14px !important;
+        border-radius: 20px !important;
+    }
+    h1.a img {
+        height: 75px !important;
+    }
+    .menu2 td a {
+        padding: 10px 6px !important;
+        font-size: 13px !important;
+    }
+    .download-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+    .bg-content {
+        padding: 18px 14px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .download-grid {
+        grid-template-columns: 1fr;
+    }
+}

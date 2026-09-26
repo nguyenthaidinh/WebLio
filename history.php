@@ -9,19 +9,19 @@ include('head.php');
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Trang Chủ Chính Thức - Ngọc Rồng Online</title>
+    <title>Trang Chủ Chính Thức - Lio Universe</title>
     <meta name="description" content="">
     <meta name="author" content="">
     <base href="/">
     <meta name="description"
-        content="Website chính thức của Chú Bé Rồng Online – Game Bay Vien Ngoc Rong Mobile nhập vai trực tuyến trên máy tính và điện thoại về Game 7 Viên Ngọc Rồng hấp dẫn nhất hiện nay!">
+        content="Website chính thức của Lio Universe – Game nhập vai chiến binh vũ trụ trực tuyến hấp dẫn hàng đầu phát triển bởi LioDev!">
     <meta name="keywords"
-        content="Chú Bé Rồng Online,ngoc rong mobile, game ngoc rong, game 7 vien ngoc rong, game bay vien ngoc rong">
+        content="Lio Universe, Lio Online, Chien Binh Vu Tru, LioDev, Game Nhap Vai Truc Tuyen">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title"
-        content="Website chính thức của Chú Bé Rồng Online – Game Bay Vien Ngoc Rong Mobile nhập vai trực tuyến trên máy tính và điện thoại về Game 7 Viên Ngọc Rồng hấp dẫn nhất hiện nay!">
+        content="Website chính thức của Lio Universe – Game nhập vai chiến binh vũ trụ trực tuyến hấp dẫn hàng đầu phát triển bởi LioDev!">
     <meta name="twitter:description"
-        content="Website chính thức của Chú Bé Rồng Online – Game Bay Vien Ngoc Rong Mobile nhập vai trực tuyến trên máy tính và điện thoại về Game 7 Viên Ngọc Rồng hấp dẫn nhất hiện nay!">
+        content="Website chính thức của Lio Universe – Game nhập vai chiến binh vũ trụ trực tuyến hấp dẫn hàng đầu phát triển bởi LioDev!">
     <meta name="twitter:image" content="/image/logo.png">
     <meta name="twitter:image:width" content="200">
     <meta name="twitter:image:height" content="200">
@@ -127,7 +127,7 @@ include('head.php');
                                         <?php echo $_IP; ?>
                                     </small><br>
                                     <small>Desgin By Mr Blue</small><br>
-                                    <small>2024© Ngọc Rồng Online</small>
+                                    <small>2024© Lio Universe</small>
                                 </div>
                             </div>
                 </div>
