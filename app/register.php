@@ -1,6 +1,21 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
-<html>
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+require_once __DIR__ . '/../server_config.php';
+
+if (empty($_SESSION['auth_csrf_token'])) {
+    $_SESSION['auth_csrf_token'] = bin2hex(random_bytes(32));
+}
+
+$gameServers = game_server_configs();
+$requestedServer = (string)($_GET['server'] ?? '1');
+if (!isset($gameServers[$requestedServer])) {
+    $requestedServer = '1';
+}
+?>
+<!DOCTYPE html>
+<html lang="vi">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>Chào mừng bạn đến với Lio Universe - Đăng Ký Tài Khoản</title>
@@ -194,6 +209,8 @@
 			display: flex;
 			justify-content: center;
 			align-items: center;
+			gap: 10px;
+			flex-wrap: wrap;
 		}
 
 		.server-label {
@@ -204,6 +221,24 @@
 			color: #febb12;
 			cursor: pointer;
 			font-size: 14px;
+			padding: 10px 12px;
+			border: 1px solid rgba(249, 115, 22, 0.25);
+			border-radius: 8px;
+			transition: all 0.2s ease;
+		}
+
+		.server-label.selected {
+			background: rgba(249, 115, 22, 0.18);
+			border-color: #f97316;
+			box-shadow: 0 0 12px rgba(249, 115, 22, 0.22);
+		}
+
+		.server-context-note {
+			width: 100%;
+			color: #fcd34d;
+			font-size: 12px;
+			line-height: 1.45;
+			text-align: center;
 		}
 
 		.server-label input[type="radio"] {
@@ -337,6 +372,7 @@
 						<div class="body-subtitle">Đăng ký tài khoản Lio Universe mới.</div>
 						<form id="registerForm" method="POST" name="register">
 							<input type="hidden" name="action" value="register" />
+							<input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['auth_csrf_token'], ENT_QUOTES, 'UTF-8'); ?>" />
 							<input type="hidden" name="keySig" value="a511129a7ce15460414e6fe318eebc2b" />
 							<input type="hidden" name="nav" value="" readonly="readonly" />
 							
@@ -356,15 +392,20 @@
 							</div>
 
 							<div class="server-container">
-								<label class="server-label">
-									<input type="radio" name="server" value="1" checked required />
-									<span>Server 1 sao</span>
-								</label>
+								<?php foreach ($gameServers as $serverId => $serverConfig): ?>
+									<label class="server-label<?php echo (string)$serverId === $requestedServer ? ' selected' : ''; ?>" data-server-id="<?php echo htmlspecialchars((string)$serverId, ENT_QUOTES, 'UTF-8'); ?>" data-database="<?php echo htmlspecialchars((string)$serverConfig['database'], ENT_QUOTES, 'UTF-8'); ?>">
+										<input type="radio" name="server" value="<?php echo htmlspecialchars((string)$serverId, ENT_QUOTES, 'UTF-8'); ?>" <?php echo (string)$serverId === $requestedServer ? 'checked' : ''; ?> required />
+										<span><?php echo htmlspecialchars($serverConfig['name'], ENT_QUOTES, 'UTF-8'); ?></span>
+									</label>
+								<?php endforeach; ?>
+								<div id="serverContextNote" class="server-context-note">
+									Đang đăng ký <?php echo htmlspecialchars($gameServers[$requestedServer]['name'], ENT_QUOTES, 'UTF-8'); ?> · database <?php echo htmlspecialchars($gameServers[$requestedServer]['database'], ENT_QUOTES, 'UTF-8'); ?>.
+								</div>
 							</div>
 
 							<div id="registerMessage" class="message" style="display:none;"></div>
 							
-							<button type="submit" id="button1" name="submit">Đăng Ký</button>
+							<button type="submit" id="button1" name="submit">Đăng Ký <?php echo htmlspecialchars($gameServers[$requestedServer]['name'], ENT_QUOTES, 'UTF-8'); ?></button>
 							
 							<div class="register-link-container">
 								Đã có tài khoản? <a href="login.php">Đăng Nhập ngay</a>
@@ -383,13 +424,31 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(document).ready(function() {
+    $('.server-label').on('click', function() {
+        var serverId = String($(this).data('server-id'));
+        var databaseName = String($(this).data('database'));
+        var serverName = serverId === '2' ? 'Server 2' : 'Server 1';
+        $('.server-label').removeClass('selected');
+        $(this).addClass('selected');
+        $(this).find('input[name="server"]').prop('checked', true);
+        $('#serverContextNote').text('Đang đăng ký ' + serverName + ' · database ' + databaseName + '.');
+        $('#button1').text('Đăng Ký ' + serverName);
+        localStorage.setItem('lio_selected_server', serverId);
+    });
+
+    var requestedServer = <?php echo json_encode($requestedServer, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); ?>;
+    var rememberedServer = localStorage.getItem('lio_selected_server');
+    var initialServer = requestedServer !== '1' ? requestedServer : (rememberedServer || requestedServer);
+    var initialLabel = $('.server-label[data-server-id="' + initialServer + '"]');
+    if (initialLabel.length) {
+        initialLabel.trigger('click');
+    }
+
     $('#registerForm').submit(function(e) {
         e.preventDefault(); // Ngăn chặn form submit theo cách thông thường
 
         var form = $(this);
-        // Đảm bảo URL này khớp với tên file PHP của bạn
-        // Nếu file PHP của bạn là "auth_process.php", hãy đổi thành 'auth_process.php'
-        var url = 'register_process.php'; 
+        var url = 'register_process.php';
 
         $.ajax({
             type: "POST",
@@ -419,7 +478,10 @@ $(document).ready(function() {
                 var messageDiv = $('#registerMessage');
                 messageDiv.css('display', 'block');
                 messageDiv.addClass('error');
-                messageDiv.text('Đã xảy ra lỗi kết nối. Vui lòng thử lại sau. (Mã lỗi: ' + jqXHR.status + ')');
+                var responseMessage = jqXHR.responseJSON && jqXHR.responseJSON.message
+                    ? jqXHR.responseJSON.message
+                    : 'Đã xảy ra lỗi kết nối. Vui lòng thử lại sau. (Mã lỗi: ' + jqXHR.status + ')';
+                messageDiv.text(responseMessage);
             }
         });
     });

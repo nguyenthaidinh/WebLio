@@ -2,7 +2,7 @@
 
 function game_server_configs(): array
 {
-    return [
+    $servers = [
         '1' => [
             'name' => 'Server 1',
             // Website and MariaDB currently run on the same machine.
@@ -17,8 +17,23 @@ function game_server_configs(): array
             'admin_api_url' => getenv('NRO_ADMIN_API_S1_URL') ?: 'http://127.0.0.1:18081',
             'admin_api_token' => getenv('NRO_ADMIN_API_S1_TOKEN') ?: '',
         ],
-        // Server 2 (awnv3) is intentionally omitted until its database is ready.
     ];
+
+    $servers['2'] = [
+        'name' => 'Server 2',
+        'host' => getenv('NRO_DB_S2_HOST') ?: '127.0.0.1',
+        'port' => (int)(getenv('NRO_DB_S2_PORT') ?: 3306),
+        'game_port' => 14446,
+        'database' => 'awnv3',
+        // The two local servers currently share one MariaDB account. Keep
+        // dedicated SV2 environment variables so they can be split safely.
+        'username' => getenv('NRO_DB_S2_USER') ?: $servers['1']['username'],
+        'password' => getenv('NRO_DB_S2_PASSWORD') ?: $servers['1']['password'],
+        'admin_api_url' => getenv('NRO_ADMIN_API_S2_URL') ?: 'http://127.0.0.1:18082',
+        'admin_api_token' => getenv('NRO_ADMIN_API_S2_TOKEN') ?: '',
+    ];
+
+    return $servers;
 }
 
 function game_server_config(string $serverId): ?array
@@ -31,8 +46,7 @@ function game_server_config(string $serverId): ?array
 /**
  * Servers exposed to the Java Admin API dashboard.
  *
- * Keep this list separate from game_server_configs(): Server 2 can be managed
- * from the admin dashboard without enabling it for website login/registration.
+ * Kept as a separate function so runtime-only servers can be added later.
  */
 function admin_runtime_server_configs(): array
 {
@@ -40,13 +54,7 @@ function admin_runtime_server_configs(): array
 
     return [
         '1' => $gameServers['1'],
-        '2' => [
-            'name' => 'Server 2',
-            'game_port' => 14446,
-            'database' => 'awnv3',
-            'admin_api_url' => getenv('NRO_ADMIN_API_S2_URL') ?: 'http://127.0.0.1:18082',
-            'admin_api_token' => getenv('NRO_ADMIN_API_S2_TOKEN') ?: '',
-        ],
+        '2' => $gameServers['2'],
     ];
 }
 
@@ -69,6 +77,11 @@ function is_server_one(): bool
     return current_game_server_id() === '1';
 }
 
+function is_server_two(): bool
+{
+    return current_game_server_id() === '2';
+}
+
 function require_server_one_feature(bool $jsonResponse = false): void
 {
     if (is_server_one()) {
@@ -89,5 +102,40 @@ function require_server_one_feature(bool $jsonResponse = false): void
 
     $_SESSION['server_one_notice'] = 'Chức năng này hiện chỉ hỗ trợ Server 1.';
     header('Location: /forum.php');
+    exit();
+}
+
+function server_two_recharge_disabled_message(): string
+{
+    return 'Server 2 hiện không hỗ trợ nạp tiền hoặc nạp thẻ.';
+}
+
+/**
+ * Recharge belongs exclusively to Server 1. Block before any database
+ * connection so a Server 2 session can never create a recharge request.
+ */
+function require_server_one_recharge(bool $jsonResponse = false): void
+{
+    if (is_server_one()) {
+        return;
+    }
+
+    http_response_code(403);
+    $message = server_two_recharge_disabled_message();
+
+    if ($jsonResponse) {
+        header('Content-Type: application/json; charset=UTF-8');
+        echo json_encode([
+            'success' => false,
+            'ok' => false,
+            'status' => 'error',
+            'message' => $message,
+            'server_id' => '2',
+        ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        exit();
+    }
+
+    $_SESSION['server_two_notice'] = $message;
+    header('Location: /app/server-2.php?notice=recharge-disabled');
     exit();
 }

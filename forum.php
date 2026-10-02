@@ -1,4 +1,14 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+require_once __DIR__ . '/server_config.php';
+if (!empty($_SESSION['user_id']) && function_exists('current_game_server_id') && current_game_server_id() === '2') {
+    // The legacy forum schema belongs to Server 1. Keep SV2 users on the
+    // dedicated dashboard instead of running incompatible forum queries.
+    header('Location: /app/server-2.php');
+    exit();
+}
 require_once 'settings.php';
 require_once 'forum_data.php';
 require_once __DIR__ . '/forum_post_helpers.php';

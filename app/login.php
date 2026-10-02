@@ -4,9 +4,16 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 require_once __DIR__ . '/../server_config.php';
 
+if (empty($_SESSION['auth_csrf_token'])) {
+    $_SESSION['auth_csrf_token'] = bin2hex(random_bytes(32));
+}
+
 $alreadyLoggedIn = !empty($_SESSION['username']);
 $loggedInUser = $_SESSION['username'] ?? '';
 $gameServers = game_server_configs();
+$loggedInServerId = current_game_server_id();
+$accountHomeUrl = $loggedInServerId === '2' ? '/app/server-2.php' : '/forum.php';
+$accountHomeLabel = $loggedInServerId === '2' ? 'Vào Khu Vực Server 2' : 'Vào Diễn Đàn Ngay';
 ?>
 <!DOCTYPE html>
 <html lang="vi">
@@ -359,6 +366,20 @@ $gameServers = game_server_configs();
             text-transform: uppercase;
         }
 
+        .status-badge-sv2 {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 10.5px;
+            font-weight: 700;
+            color: #1d4ed8;
+            background: #dbeafe;
+            border: 1px solid #bfdbfe;
+            padding: 2px 7px;
+            border-radius: 9999px;
+            text-transform: uppercase;
+        }
+
         /* Coming Soon Banner/Toast Notice */
         .server-notice-banner {
             margin-top: 10px;
@@ -682,8 +703,8 @@ $gameServers = game_server_configs();
                             <div class="logged-in-user-desc">Bạn đang đăng nhập vào hệ thống Lio Universe.</div>
 
                             <div class="logged-in-user-btns">
-                                <a href="/forum.php" class="btn-enter-forum">
-                                    <span>Vào Diễn Đàn Ngay</span>
+                                <a href="<?= htmlspecialchars($accountHomeUrl, ENT_QUOTES, 'UTF-8') ?>" class="btn-enter-forum">
+                                    <span><?= htmlspecialchars($accountHomeLabel, ENT_QUOTES, 'UTF-8') ?></span>
                                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                                         <line x1="5" y1="12" x2="19" y2="12"></line>
                                         <polyline points="12 5 19 12 12 19"></polyline>
@@ -703,7 +724,7 @@ $gameServers = game_server_configs();
                                 </svg>
                                 <span>Đăng Nhập</span>
                             </a>
-                            <a href="/app/register.php" class="auth-switch-tab">
+                            <a href="/app/register.php" class="auth-switch-tab" id="registerTabLink">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
                                     <circle cx="8.5" cy="7" r="4"></circle>
@@ -718,6 +739,7 @@ $gameServers = game_server_configs();
                         <form id="loginForm" method="POST" name="login" novalidate>
                             <!-- Preserved Hidden Security & Action Fields -->
                             <input type="hidden" name="action" value="login">
+                            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['auth_csrf_token'], ENT_QUOTES, 'UTF-8') ?>">
                             <input type="hidden" name="keySig" value="a511129a7ce15460414e6fe318eebc2b">
                             <input type="hidden" name="nav" value="" readonly="readonly">
                             <input type="hidden" name="checkru" value="d3540b1767470e0a87215174bd0ed85d">
@@ -777,7 +799,7 @@ $gameServers = game_server_configs();
                                 </div>
                             </div>
 
-                            <!-- Server Selection (Server 1 Active + Server 2 Coming Soon) -->
+                            <!-- Server Selection -->
                             <div class="server-select-wrap">
                                 <div class="server-select-title">
                                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -810,8 +832,9 @@ $gameServers = game_server_configs();
                                         <div class="server-box-desc">Cụm Chiến Binh Chính Thức</div>
                                     </label>
 
-                                    <!-- Server 2: Coming Soon -->
-                                    <div class="server-box-card disabled-coming-soon" id="serverCard2" title="Nhấp để xem thông tin Server 2">
+                                    <!-- Server 2: AWN source, separate database -->
+                                    <label class="server-box-card" id="serverCard2" title="Đăng nhập cụm Server 2">
+                                        <input type="radio" name="server" value="2" required style="display:none;">
                                         <div class="server-box-top">
                                             <div class="server-box-name">
                                                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -821,20 +844,20 @@ $gameServers = game_server_configs();
                                                 </svg>
                                                 <span>Server 2</span>
                                             </div>
-                                            <span class="status-badge-soon">Coming Soon</span>
+                                            <span class="status-badge-sv2">SV2</span>
                                         </div>
-                                        <div class="server-box-desc">Cụm Thử Nghiệm Vũ Trụ</div>
-                                    </div>
+                                        <div class="server-box-desc">Cụm AWN · dữ liệu riêng</div>
+                                    </label>
                                 </div>
 
-                                <!-- Coming Soon Interactive Banner -->
+                                <!-- Explicit SV2 context to prevent cross-server mistakes -->
                                 <div id="serverNotice" class="server-notice-banner">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <circle cx="12" cy="12" r="10"></circle>
                                         <line x1="12" y1="8" x2="12" y2="12"></line>
                                         <line x1="12" y1="16" x2="12.01" y2="16"></line>
                                     </svg>
-                                    <span><strong>Server 2 (Coming Soon):</strong> Máy chủ đang trong quá trình chuẩn bị ra mắt. Vui lòng chọn <strong>Server 1</strong> để đăng nhập chơi ngay!</span>
+                                    <span><strong>Đang chọn Server 2:</strong> tài khoản và nhân vật dùng dữ liệu SV2 riêng, không dùng chung với Server 1.</span>
                                 </div>
                             </div>
 
@@ -919,36 +942,40 @@ $gameServers = game_server_configs();
             }
         });
 
-        // Server 1 Selection
-        $('#serverCard1').on('click', function() {
-            $(this).addClass('active');
-            $(this).find('input[type="radio"]').prop('checked', true);
-            $('#serverNotice').slideUp(200);
+        function selectGameServer(serverId) {
+            var card = $('#serverCard' + serverId);
+            if (!card.length) {
+                serverId = '1';
+                card = $('#serverCard1');
+            }
+
+            $('.server-box-card').removeClass('active');
+            card.addClass('active');
+            card.find('input[type="radio"]').prop('checked', true);
+            localStorage.setItem('lio_selected_server', serverId);
+            $('#registerTabLink').attr('href', '/app/register.php?server=' + encodeURIComponent(serverId));
+
+            if (serverId === '2') {
+                $('#serverNotice').stop(true, true).slideDown(200);
+            } else {
+                $('#serverNotice').stop(true, true).slideUp(150);
+            }
+        }
+
+        $('.server-box-card').on('click', function() {
+            selectGameServer(String($(this).find('input[name="server"]').val()));
         });
 
-        // Server 2 Click -> Shows "Coming Soon" Alert Banner
-        $('#serverCard2').on('click', function() {
-            var card = $(this);
-            
-            // Micro-shake animation
-            card.css({
-                'transform': 'translateX(-4px)',
-                'transition': 'transform 0.1s ease'
-            });
-            setTimeout(function() {
-                card.css('transform', 'translateX(4px)');
-                setTimeout(function() {
-                    card.css('transform', 'none');
-                }, 100);
-            }, 100);
+        var requestedServer = new URLSearchParams(window.location.search).get('server');
+        var rememberedServer = localStorage.getItem('lio_selected_server');
+        selectGameServer(requestedServer || rememberedServer || '1');
 
-            // Show Coming Soon Notice
-            $('#serverNotice').stop(true, true).slideDown(250);
-
-            // Keep Server 1 checked
-            $('#serverCard1').addClass('active');
-            $('#serverCard1 input[type="radio"]').prop('checked', true);
-        });
+        if (new URLSearchParams(window.location.search).get('registered') === '1') {
+            var registeredMessage = $('#loginMessage');
+            registeredMessage.removeClass('error').addClass('success').show();
+            registeredMessage.find('.alert-icon-svg').html('<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>');
+            registeredMessage.find('.alert-msg-text').text('Đăng ký thành công. Hãy đăng nhập đúng máy chủ vừa chọn.');
+        }
 
         // Preload remembered username if exists
         var savedUser = localStorage.getItem('lio_remembered_user');

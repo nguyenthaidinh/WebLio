@@ -9,6 +9,11 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 require_once '../settings.php';
+if (function_exists('current_game_server_id') && current_game_server_id() === '2') {
+    // SV2 has its own password form and schema-safe account dashboard.
+    header('Location: /app/server-2.php');
+    exit();
+}
 require_once '../forum_data.php';
 require_once '../connect.php';
 if (!isset($_SESSION['user_id'])) {

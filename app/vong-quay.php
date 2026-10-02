@@ -228,22 +228,19 @@ function lucky_json_response($payload, $status_code = 200) {
 }
 
 function lucky_build_wheel_segments($rewards) {
-    $total_weight = lucky_rewards_total_weight($rewards);
-    if ($total_weight <= 0) {
+    $count = count($rewards);
+    if ($count <= 0) {
         return [];
     }
 
+    $deg_per_slice = 360.0 / $count;
     $segments = [];
-    $cursor = 0.0;
+    $index = 0;
     foreach ($rewards as $reward) {
         $weight = max(0, (int)$reward['weight']);
-        if ($weight <= 0) {
-            continue;
-        }
-
-        $degrees = ($weight / $total_weight) * 360;
-        $start = $cursor;
-        $end = $cursor + $degrees;
+        $start = $index * $deg_per_slice;
+        $end = ($index + 1) * $deg_per_slice;
+        $degrees = $deg_per_slice;
         $segments[] = [
             'reward_key' => (string)$reward['reward_key'],
             'label' => (string)$reward['label'],
@@ -255,7 +252,7 @@ function lucky_build_wheel_segments($rewards) {
             'degrees' => $degrees,
             'center' => $start + ($degrees / 2),
         ];
-        $cursor = $end;
+        $index++;
     }
 
     if (!empty($segments)) {
@@ -290,7 +287,7 @@ function lucky_wheel_target_for_reward($segments, $reward_key) {
     $landing_angle = $start + ($span / 2);
 
     if ($span > 3) {
-        $padding = min(12.0, max(1.2, $span * 0.14));
+        $padding = min(10.0, max(2.5, $span * 0.18));
         if (($end - $padding) > ($start + $padding)) {
             $min = (int)round(($start + $padding) * 1000);
             $max = (int)round(($end - $padding) * 1000);
@@ -968,6 +965,267 @@ if ($wheel_config_json === false) {
             line-height: 1.5;
         }
 
+        /* Message styling */
+        .message {
+            margin: 12px auto;
+            max-width: 480px;
+            padding: 12px 18px;
+            border-radius: 14px;
+            font-size: 13.5px;
+            font-weight: 700;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            animation: resultCardPop 0.35s ease;
+        }
+        .message.error {
+            background: #fef2f2;
+            border: 1.5px solid #fecaca;
+            color: #b91c1c;
+        }
+        .message.success {
+            background: #ecfdf5;
+            border: 1.5px solid #a7f3d0;
+            color: #047857;
+        }
+        .message.info {
+            background: #eff6ff;
+            border: 1.5px solid #bfdbfe;
+            color: #1d4ed8;
+        }
+
+        /* ================================================================
+           SPIN RESULT CARD - MODERN LUXURY GLASS STYLING
+           ================================================================ */
+        .spin-result-card {
+            position: relative;
+            max-width: 480px;
+            margin: 16px auto 22px;
+            padding: 24px 22px;
+            border-radius: 22px;
+            text-align: center;
+            box-sizing: border-box;
+            animation: resultCardPop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+            overflow: hidden;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+
+        @keyframes resultCardPop {
+            0% {
+                opacity: 0;
+                transform: scale(0.92) translateY(12px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        /* WIN CARD */
+        .spin-result-card.win {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(254, 243, 199, 0.95) 100%);
+            border: 2px solid #f59e0b;
+            box-shadow: 0 14px 35px -5px rgba(245, 158, 11, 0.35), 0 0 0 1px rgba(251, 191, 36, 0.4) inset;
+        }
+
+        .spin-result-card.win::before {
+            content: "";
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 280px;
+            height: 120px;
+            background: radial-gradient(ellipse, rgba(245, 158, 11, 0.25) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        /* BULK CARD */
+        .spin-result-card.bulk {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(254, 226, 226, 0.95) 100%);
+            border: 2px solid #ef4444;
+            box-shadow: 0 14px 35px -5px rgba(239, 68, 68, 0.3), 0 0 0 1px rgba(248, 113, 113, 0.3) inset;
+        }
+
+        .spin-result-card.bulk::before {
+            content: "";
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 280px;
+            height: 120px;
+            background: radial-gradient(ellipse, rgba(239, 68, 68, 0.25) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        /* MISS CARD */
+        .spin-result-card.miss {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(241, 245, 249, 0.95) 100%);
+            border: 1.5px solid #cbd5e1;
+            box-shadow: 0 8px 24px -5px rgba(100, 116, 139, 0.16);
+        }
+
+        /* Eyebrow badge */
+        .result-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 14px;
+            border-radius: 999px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 11.5px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 8px;
+        }
+
+        .spin-result-card.win .result-eyebrow {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #ffffff;
+            box-shadow: 0 3px 10px rgba(245, 158, 11, 0.35);
+        }
+
+        .spin-result-card.bulk .result-eyebrow {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: #ffffff;
+            box-shadow: 0 3px 10px rgba(239, 68, 68, 0.35);
+        }
+
+        .spin-result-card.miss .result-eyebrow {
+            background: #64748b;
+            color: #ffffff;
+        }
+
+        /* Result Title */
+        .result-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            color: #475569;
+            margin-bottom: 6px;
+        }
+
+        .spin-result-card.win .result-title {
+            color: #92400e;
+        }
+
+        .spin-result-card.bulk .result-title {
+            color: #991b1b;
+        }
+
+        /* Result Prize */
+        .result-prize {
+            font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+            font-size: 36px;
+            font-weight: 900;
+            line-height: 1.15;
+            margin: 6px 0 10px;
+            letter-spacing: 0.5px;
+        }
+
+        .spin-result-card.win .result-prize {
+            background: linear-gradient(135deg, #f59e0b 0%, #ea580c 50%, #b45309 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 3px 10px rgba(245, 158, 11, 0.35));
+        }
+
+        .spin-result-card.bulk .result-prize {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 50%, #991b1b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 3px 10px rgba(239, 68, 68, 0.3));
+        }
+
+        .spin-result-card.miss .result-prize {
+            color: #64748b;
+            font-size: 24px;
+        }
+
+        /* Result Desc */
+        .result-desc {
+            font-size: 13px;
+            line-height: 1.55;
+            color: #64748b;
+            font-weight: 600;
+            max-width: 410px;
+            margin: 0 auto 12px;
+        }
+
+        .spin-result-card.win .result-desc {
+            color: #78350f;
+        }
+
+        .spin-result-card.bulk .result-desc {
+            color: #7f1d1d;
+        }
+
+        /* Result Actions & Button */
+        .result-actions {
+            margin-top: 14px;
+        }
+
+        .result-link {
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 8px !important;
+            padding: 10px 22px !important;
+            border-radius: 12px !important;
+            font-family: 'Outfit', sans-serif !important;
+            font-size: 13.5px !important;
+            font-weight: 800 !important;
+            text-decoration: none !important;
+            color: #ffffff !important;
+            transition: all 0.22s ease !important;
+        }
+
+        .spin-result-card.win .result-link,
+        .spin-result-card.bulk .result-link {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important;
+            box-shadow: 0 4px 14px rgba(217, 119, 6, 0.35) !important;
+        }
+
+        .spin-result-card.win .result-link:hover,
+        .spin-result-card.bulk .result-link:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 7px 20px rgba(217, 119, 6, 0.5) !important;
+            color: #ffffff !important;
+        }
+
+        /* Bulk Summary Grid */
+        .bulk-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 8px;
+            margin: 14px 0 16px;
+            text-align: left;
+        }
+
+        .bulk-summary-item {
+            background: #ffffff;
+            border: 1.5px solid #fecaca;
+            border-radius: 10px;
+            padding: 8px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+        }
+
+        .bulk-summary-item strong {
+            color: #334155;
+            font-weight: 800;
+        }
+
+        .bulk-summary-item span {
+            color: #ef4444;
+            font-weight: 700;
+        }
+
         .action-row {
             display: flex;
             justify-content: center;
@@ -1176,7 +1434,7 @@ if ($wheel_config_json === false) {
             overflow: hidden;
             background:
                 radial-gradient(circle at 50% 36%, rgba(255,255,255,0.38), transparent 26%),
-                conic-gradient(from -90deg, <?php echo htmlspecialchars($wheel_gradient); ?>);
+                conic-gradient(from 0deg, <?php echo htmlspecialchars($wheel_gradient); ?>);
             border: 12px solid #b45309;
             box-shadow:
                 inset 0 0 0 3px #fbbf24,
@@ -1186,6 +1444,10 @@ if ($wheel_config_json === false) {
                 0 14px 35px rgba(180, 83, 9, 0.35);
             transform: rotate(0deg);
             will-change: transform;
+        }
+
+        .wheel.has-result {
+            transform: rotate(var(--settled-rotation, 0deg));
         }
 
         .wheel::before {
@@ -1452,11 +1714,11 @@ if ($wheel_config_json === false) {
                                                 ?>
                                                 <div class="spin-result-card <?php echo htmlspecialchars($result_type); ?>" id="spinResult">
                                                     <?php if ($result_type === 'bulk'): ?>
-                                                        <div class="result-eyebrow">Kết quả quay nhanh</div>
-                                                        <div class="result-title">Đã random đủ <?php echo number_format($result_spin_count, 0, ',', '.'); ?> lần</div>
-                                                        <div class="result-prize"><?php echo number_format($result_total_amount, 0, ',', '.'); ?> TV</div>
+                                                        <div class="result-eyebrow"><i class="bi bi-lightning-charge-fill"></i> Kết quả quay nhanh</div>
+                                                        <div class="result-title">Đã quay thành công <?php echo number_format($result_spin_count, 0, ',', '.'); ?> lượt</div>
+                                                        <div class="result-prize">+<?php echo number_format($result_total_amount, 0, ',', '.'); ?> TV</div>
                                                         <div class="result-desc">
-                                                            Tổng TV đã được cộng vào kho chờ rút. Kết quả bên dưới là thống kê từng phần thưởng trúng trong <?php echo number_format($result_spin_count, 0, ',', '.'); ?> lượt.
+                                                            Tổng số TV đã được tự động cộng vào kho chờ rút của bạn. Bạn có thể rút ngay vào game hoặc quay tiếp.
                                                         </div>
                                                         <?php if (!empty($result_summary)): ?>
                                                             <div class="bulk-summary">
@@ -1469,23 +1731,23 @@ if ($wheel_config_json === false) {
                                                             </div>
                                                         <?php endif; ?>
                                                         <div class="result-actions">
-                                                            <a class="result-link" href="#withdrawGold">Rút thỏi vàng</a>
+                                                            <a class="result-link" href="#withdrawGold"><i class="bi bi-wallet2"></i> Rút thỏi vàng ngay</a>
                                                         </div>
                                                     <?php elseif ($result_type === 'win'): ?>
-                                                        <div class="result-eyebrow">Kết quả quay</div>
-                                                        <div class="result-title">Chúc mừng bạn đã trúng</div>
+                                                        <div class="result-eyebrow"><i class="bi bi-trophy-fill"></i> Kết quả quay thưởng</div>
+                                                        <div class="result-title">🎉 Chúc mừng bạn đã trúng thưởng!</div>
                                                         <div class="result-prize"><?php echo htmlspecialchars($result_label); ?></div>
                                                         <div class="result-desc">
-                                                            <?php echo number_format($result_amount, 0, ',', '.'); ?> TV đã được cộng vào kho chờ rút. Hãy thoát game trước khi rút vào túi đồ.
+                                                            <strong><?php echo number_format($result_amount, 0, ',', '.'); ?> TV</strong> đã được cộng vào kho chờ rút. Hãy thoát game trước khi bấm rút vào túi đồ.
                                                         </div>
                                                         <div class="result-actions">
-                                                            <a class="result-link" href="#withdrawGold">Rút thỏi vàng</a>
+                                                            <a class="result-link" href="#withdrawGold"><i class="bi bi-wallet2"></i> Rút thỏi vàng ngay</a>
                                                         </div>
                                                     <?php else: ?>
-                                                        <div class="result-eyebrow">Kết quả quay</div>
-                                                        <div class="result-title">Chúc bạn may mắn lần sau</div>
+                                                        <div class="result-eyebrow"><i class="bi bi-stars"></i> Kết quả quay</div>
+                                                        <div class="result-title">Chúc bạn may mắn lần sau!</div>
                                                         <div class="result-prize"><?php echo htmlspecialchars($result_label ?: 'Chúc may mắn'); ?></div>
-                                                        <div class="result-desc">Lần này chưa trúng TV, bạn có thể điểm danh hoặc tích lũy nạp để nhận thêm lượt quay.</div>
+                                                        <div class="result-desc">Lần này chưa trúng TV, bạn có thể điểm danh hàng ngày hoặc nạp ngọc để nhận thêm lượt quay nhé!</div>
                                                     <?php endif; ?>
                                                 </div>
                                             <?php elseif ($message !== ''): ?>
@@ -1554,7 +1816,7 @@ if ($wheel_config_json === false) {
                                         <?php endif; ?>
                                     <?php endforeach; ?>
                 </div>
-                <button id="wheelCenterSpin" class="wheel-center" type="button" <?php echo $remaining_spins <= 0 ? 'disabled' : ''; ?>>Quay</button> class="wheel-center" type="button" <?php echo $remaining_spins <= 0 ? 'disabled' : ''; ?>>Quay</button>
+                <button id="wheelCenterSpin" class="wheel-center" type="button" <?php echo $remaining_spins <= 0 ? 'disabled' : ''; ?>>Quay</button>
                                         </div>
                                         <div class="spin-live-status" id="spinLiveStatus"></div>
 
@@ -1569,7 +1831,6 @@ if ($wheel_config_json === false) {
                                             <a href="/app/nap-ngoc.php">Nạp tiền</a>
                                             <a href="/app/doi-vang.php">Đổi thỏi vàng</a>
                                         </div>
-                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>
@@ -1733,32 +1994,32 @@ if ($wheel_config_json === false) {
 
                     return '' +
                         '<div class="spin-result-card bulk" id="spinResult">' +
-                            '<div class="result-eyebrow">Kết quả quay nhanh</div>' +
-                            '<div class="result-title">Đã random đủ ' + formatNumber(spinCount) + ' lần</div>' +
-                            '<div class="result-prize">' + formatNumber(totalAmount) + ' TV</div>' +
-                            '<div class="result-desc">Tổng TV đã được cộng vào kho chờ rút. Bảng dưới là thống kê từng phần thưởng trúng trong ' + formatNumber(spinCount) + ' lượt.</div>' +
+                            '<div class="result-eyebrow"><i class="bi bi-lightning-charge-fill"></i> Kết quả quay nhanh</div>' +
+                            '<div class="result-title">Đã quay thành công ' + formatNumber(spinCount) + ' lượt</div>' +
+                            '<div class="result-prize">+' + formatNumber(totalAmount) + ' TV</div>' +
+                            '<div class="result-desc">Tổng số TV đã được tự động cộng vào kho chờ rút của bạn. Bạn có thể rút ngay vào game hoặc quay tiếp.</div>' +
                             (summaryHtml ? '<div class="bulk-summary">' + summaryHtml + '</div>' : '') +
-                            '<div class="result-actions"><a class="result-link" href="#withdrawGold">Rút thỏi vàng</a></div>' +
+                            '<div class="result-actions"><a class="result-link" href="#withdrawGold"><i class="bi bi-wallet2"></i> Rút thỏi vàng ngay</a></div>' +
                         '</div>';
                 }
 
                 if (result.type === 'win') {
                     return '' +
                         '<div class="spin-result-card win" id="spinResult">' +
-                            '<div class="result-eyebrow">Kết quả quay</div>' +
-                            '<div class="result-title">Chúc mừng bạn đã trúng</div>' +
+                            '<div class="result-eyebrow"><i class="bi bi-trophy-fill"></i> Kết quả quay thưởng</div>' +
+                            '<div class="result-title">🎉 Chúc mừng bạn đã trúng thưởng!</div>' +
                             '<div class="result-prize">' + label + '</div>' +
-                            '<div class="result-desc">' + formatNumber(amount) + ' TV đã được cộng vào kho chờ rút. Hãy thoát game trước khi rút vào túi đồ.</div>' +
-                            '<div class="result-actions"><a class="result-link" href="#withdrawGold">Rút thỏi vàng</a></div>' +
+                            '<div class="result-desc"><strong>' + formatNumber(amount) + ' TV</strong> đã được cộng vào kho chờ rút. Hãy thoát game trước khi bấm rút vào túi đồ.</div>' +
+                            '<div class="result-actions"><a class="result-link" href="#withdrawGold"><i class="bi bi-wallet2"></i> Rút thỏi vàng ngay</a></div>' +
                         '</div>';
                 }
 
                 return '' +
                     '<div class="spin-result-card miss" id="spinResult">' +
-                        '<div class="result-eyebrow">Kết quả quay</div>' +
-                        '<div class="result-title">Chúc bạn may mắn lần sau</div>' +
+                        '<div class="result-eyebrow"><i class="bi bi-stars"></i> Kết quả quay</div>' +
+                        '<div class="result-title">Chúc bạn may mắn lần sau!</div>' +
                         '<div class="result-prize">' + label + '</div>' +
-                        '<div class="result-desc">Lần này chưa trúng TV, bạn có thể điểm danh hoặc tích lũy nạp để nhận thêm lượt quay.</div>' +
+                        '<div class="result-desc">Lần này chưa trúng TV, bạn có thể điểm danh hàng ngày hoặc nạp ngọc để nhận thêm lượt quay nhé!</div>' +
                     '</div>';
             }
 
@@ -1826,6 +2087,21 @@ if ($wheel_config_json === false) {
                     existingResult.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }, 120);
             }
+
+            document.addEventListener('click', function (e) {
+                var link = e.target.closest('a[href="#withdrawGold"]');
+                if (link) {
+                    var target = document.getElementById('withdrawGold');
+                    if (target) {
+                        e.preventDefault();
+                        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        var input = target.querySelector('input[name="withdraw_amount"]');
+                        if (input) {
+                            setTimeout(function () { input.focus(); }, 350);
+                        }
+                    }
+                }
+            });
 
             if (!form || !wheel) {
                 return;
